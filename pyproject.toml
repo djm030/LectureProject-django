@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lectureproject-django"
+version = "0.1.0"
+description = "강의사이트 제작"
+authors = ["백관열 <djm030@naver.com>"]
+readme = "README.md"
+packages = [{include = "lectureproject_django"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.1.7"
+djangorestframework = "^3.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
