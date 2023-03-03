@@ -30,27 +30,26 @@ class User(AbstractUser):
             "Female",
         )
 
-    MemberId = models.PositiveBigIntegerField(max_length=200)
+    memberId = models.PositiveBigIntegerField(max_length=200)
 
-    UserId = models.CharField(max_length=20)
+    userId = models.CharField(max_length=20)
 
-    Password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
 
-    Nickname = models.CharField(max_length=30)
+    nickname = models.CharField(max_length=30)
 
-    Name = models.CharField(max_length=30)
-    Email = models.EmailField(max_length=30)
-    DateBirth = models.DateField()
+    name = models.CharField(max_length=30)
+    email = models.EmailField(max_length=30)
+    dateBirth = models.DateField()
 
-    Gender = models.CharField(
+    gender = models.CharField(
         max_length=10,
         choices=GenderChoices.choices,
     )
 
-    PhoneNumber = models.CharField(max_length=20)
+    phoneNumber = models.CharField(max_length=20)
 
-    ProfileImg = models.URLField(max_length=50)
-    IsInstructor = models.BooleanField(default=False)
+    profileImg = models.URLField(max_length=50)
+    isInstructor = models.BooleanField(default=False)
 
-    IsAdmin = models.BooleanField(default=False)
-
+    isAdmin = models.BooleanField(default=False)
