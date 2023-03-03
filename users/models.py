@@ -1,4 +1,5 @@
 from django.db import models
+
 from django.contrib.auth.models import AbstractUser
 
 # 모델
@@ -52,3 +53,4 @@ class User(AbstractUser):
     IsInstructor = models.BooleanField(default=False)
 
     IsAdmin = models.BooleanField(default=False)
+
