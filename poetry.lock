@@ -140,6 +140,17 @@ files = [
 ]
 
 [[package]]
+name = "package"
+version = "0.1.1"
+description = "package is a package to package your package"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "package-0.1.1.tar.gz", hash = "sha256:01eee19a56a936bd63222f0a3c531fcdba37b5ad1bd833b960d62fb960b4955e"},
+]
+
+[[package]]
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
@@ -218,4 +229,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "27c7fb69dae04795a0549e4f8afbc9f719960edad630cb4b7be9366f5a36a0bd"
+content-hash = "937f2e83d0cc8dbed0e349c21bc23bfc4521aa75aaea9317e749f77845fa6b88"

@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 # UserId VARCHAR
 # Password VARCHAR
 # Name VARCHAR
-# Email VARCHAR
+# Email VARCHARgi
 # DateBirth DATE
 # Gender VARCHAR
 # PhoneNumber VARCHAR
@@ -30,26 +30,69 @@ class User(AbstractUser):
             "Female",
         )
 
-    memberId = models.PositiveBigIntegerField(max_length=200)
+    memberId = models.AutoField(
+        primary_key=True,
+    )
 
-    userId = models.CharField(max_length=20)
+    userId = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+    )
 
-    password = models.CharField(max_length=100)
+    password = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
 
-    nickname = models.CharField(max_length=30)
+    nickname = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
 
-    name = models.CharField(max_length=30)
-    email = models.EmailField(max_length=30)
-    dateBirth = models.DateField()
+    name = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+    email = models.EmailField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+    dateBirth = models.DateField(
+        null=True,
+        blank=True,
+    )
 
     gender = models.CharField(
         max_length=10,
         choices=GenderChoices.choices,
+        null=True,
+        blank=True,
     )
 
-    phoneNumber = models.CharField(max_length=20)
+    phoneNumber = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+    )
 
-    profileImg = models.URLField(max_length=50)
-    isInstructor = models.BooleanField(default=False)
+    profileImg = models.URLField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    isInstructor = models.BooleanField(
+        default=False,
+        null=True,
+        blank=True,
+    )
 
-    isAdmin = models.BooleanField(default=False)
+    isAdmin = models.BooleanField(
+        default=False,
+        null=True,
+        blank=True,
+    )
