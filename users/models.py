@@ -30,26 +30,60 @@ class User(AbstractUser):
             "Female",
         )
 
-    memberId = models.PositiveBigIntegerField(max_length=200)
+    # pk 대신 사용
+    memberId = models.AutoField(primary_key=True)
 
-    userId = models.CharField(max_length=20)
+    # profile
+    userId = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        unique=True,
+    )
+    nickname = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+        unique=True,
+    )
+    name = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
 
-    password = models.CharField(max_length=100)
-
-    nickname = models.CharField(max_length=30)
-
-    name = models.CharField(max_length=30)
-    email = models.EmailField(max_length=30)
-    dateBirth = models.DateField()
+    dateBirth = models.DateField(
+        null=True,
+        blank=True,
+    )
 
     gender = models.CharField(
         max_length=10,
         choices=GenderChoices.choices,
     )
+    phoneNumber = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+    )
 
-    phoneNumber = models.CharField(max_length=20)
+    profileImg = models.URLField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
 
-    profileImg = models.URLField(max_length=50)
+    # permission 영역
     isInstructor = models.BooleanField(default=False)
-
     isAdmin = models.BooleanField(default=False)
+
+    # 제외 영역
+    first_name = models.CharField(
+        max_length=20,
+        editable=False,
+    )
+
+    last_name = models.CharField(
+        max_length=20,
+        editable=False,
+    )

@@ -1,3 +1,41 @@
 from django.contrib import admin
+from .models import User
+from django.contrib.auth.admin import UserAdmin
 
-# Register your models here.
+
+@admin.register(User)
+class UserAdmin(UserAdmin):
+    fieldsets = (
+        (
+            "Profle",
+            {
+                "fields": (
+                    "userId",
+                    "username",
+                    "password",
+                    "nickname",
+                    "email",
+                    "name",
+                    "dateBirth",
+                    "gender",
+                    "phoneNumber",
+                    "profileImg",
+                )
+            },
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "isInstructor",
+                    "isAdmin",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
+    )
+    list_display = ("username", "name", "isAdmin")
