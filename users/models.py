@@ -34,12 +34,6 @@ class User(AbstractUser):
     memberId = models.AutoField(primary_key=True)
 
     # profile
-    userId = models.CharField(
-        max_length=20,
-        null=True,
-        blank=True,
-        unique=True,
-    )
     nickname = models.CharField(
         max_length=30,
         null=True,
