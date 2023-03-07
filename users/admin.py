@@ -10,7 +10,6 @@ class UserAdmin(UserAdmin):
             "Profle",
             {
                 "fields": (
-                    "userId",
                     "username",
                     "password",
                     "nickname",
