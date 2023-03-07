@@ -98,7 +98,7 @@ class LoginView(APIView):
             login(request, user)
             return Response({"login": "True"})
         else:
-            return Response({"login": "False"})
+            return Response({"login": "False"}, status=400)
 
 
 # logout
