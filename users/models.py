@@ -34,12 +34,7 @@ class User(AbstractUser):
     memberId = models.AutoField(primary_key=True)
 
     # profile
-    userId = models.CharField(
-        max_length=20,
-        null=True,
-        blank=True,
-        unique=True,
-    )
+
     nickname = models.CharField(
         max_length=30,
         null=True,
@@ -75,7 +70,9 @@ class User(AbstractUser):
 
     # permission 영역
     isInstructor = models.BooleanField(default=False)
-    isAdmin = models.BooleanField(default=False)
+    # isAdmin = models.BooleanField(default=False)
+    # is_staff 로 대체
+    # is_superuser
 
     # 제외 영역
     first_name = models.CharField(

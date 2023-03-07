@@ -30,6 +30,7 @@ DEBUG = os.getenv("DEBUG")  # 디버그 모드를 불러옵니다.
 
 ALLOWED_HOSTS = [
     "localhost",
+    "127.0.0.1",
 ]
 
 
@@ -47,6 +48,7 @@ SYSTEMED_APPS = [
 CUSTOMED_APPS = [
     "users.apps.UsersConfig",
     "common.apps.CommonConfig",
+    "lectures.apps.LecturesConfig",
 ]
 
 THIRDPARTY_APPS = [
