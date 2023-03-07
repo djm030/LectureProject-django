@@ -77,6 +77,10 @@ class UsernameView(APIView):
             return Response(status=status.HTTP_200_OK)
 
 
+## 이메일 인증
+
+
+# login
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -97,6 +101,7 @@ class LoginView(APIView):
             return Response({"login": "False"})
 
 
+# logout
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
