@@ -7,12 +7,14 @@ from rest_framework.permissions import IsAuthenticated
 from . import serializers
 from .models import User
 
+
 class Users(APIView):
     def post(get, request):
         password = request.data.get("password")
         if not password:
             raise ParseError
         serializer = serializers.PrivateUserSerializer(data=request.data)
+
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -77,12 +79,6 @@ class UsersView(APIView):
             user = serializer.save()
             user.set_password(password)
             user.save()
-
-            serializer = serializers.PrivateUserSerializer(user)
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-=======
             serializer = serializers.OneUserSerializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -131,4 +127,3 @@ class LogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response({"logout": "True"})
->>>>>>> 1ad6617a6827d82a4d3b81ee39f1aeaccb693b0d

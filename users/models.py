@@ -42,6 +42,7 @@ class User(AbstractUser):
 
     password = models.CharField(
         max_length=100,
+    )
     # pk 대신 사용
     memberId = models.AutoField(primary_key=True)
 
@@ -94,6 +95,7 @@ class User(AbstractUser):
 
     phoneNumber = models.CharField(
         max_length=20,
+    )
     profileImg = models.URLField(
         max_length=50,
         null=True,
@@ -114,9 +116,10 @@ class User(AbstractUser):
     isAdmin = models.BooleanField(
         default=False,
         null=True,
-        blank=True,)
+        blank=True,
+    )
     # permission 영역
-    isInstructor = models.BooleanField(default=False),
+    isInstructor = (models.BooleanField(default=False),)
     # isAdmin = models.BooleanField(default=False)
     # is_staff 로 대체
     # is_superuser
