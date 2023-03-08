@@ -20,7 +20,6 @@ class OneUserSerializer(ModelSerializer):
             "first_name",
             "last_name",
             "groups",
-            "gender",
             "user_permissions",
             "is_staff",
             "is_active",
