@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Lecture
+from .models import Lecture, calculatedLecture
 
 
 class LectureListSerializer(serializers.ModelSerializer):
@@ -11,3 +11,11 @@ class LectureListSerializer(serializers.ModelSerializer):
             "targetAudience",
             "thumbnail",
         )
+
+
+class LectureDetailSerializer(serializers.ModelSerializer):
+    lecture = LectureListSerializer(read_only=True)
+
+    class Meta:
+        model = calculatedLecture
+        fields = "__all__"

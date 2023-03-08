@@ -43,9 +43,12 @@ CUSTOMED_APPS = [
     "users.apps.UsersConfig",
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
+    "categories.apps.CategoriesConfig",
     "videos.apps.VideosConfig",
+
     "categories.apps.CategoriesConfig",
 ]
+
 
 THIRDPARTY_APPS = [
     "rest_framework",
