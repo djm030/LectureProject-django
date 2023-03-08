@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lecture
+from .models import Lecture, calculatedLecture
 
 
 @admin.register(Lecture)
@@ -28,3 +28,8 @@ class LectureAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+
+@admin.register(calculatedLecture)
+class calculatedLectureAdmin(admin.ModelAdmin):
+    pass
