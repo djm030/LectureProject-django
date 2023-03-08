@@ -27,7 +27,6 @@ class UserAdmin(UserAdmin):
             {
                 "fields": (
                     "isInstructor",
-                    "isAdmin",
                     "is_superuser",
                     "groups",
                     "user_permissions",
@@ -37,4 +36,4 @@ class UserAdmin(UserAdmin):
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
-    list_display = ("username", "name", "isAdmin")
+    list_display = ("username", "name", "is_staff")

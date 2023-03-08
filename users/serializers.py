@@ -9,12 +9,11 @@ class OneUserSerializer(ModelSerializer):
         exclude = [
             "password",
             "isInstructor",
-            "isAdmin",
             "first_name",
             "last_name",
             "groups",
-            "user_permissions",
             "gender",
+            "user_permissions",
             "is_staff",
             "is_active",
             "last_login",
