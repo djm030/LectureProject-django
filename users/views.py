@@ -96,9 +96,12 @@ class LoginView(APIView):
         )
         if user:
             login(request, user)
-            return Response({"login": "True"})
+            print(user)
+            return Response(
+                serializers.OneUserSerializer(user).data, status=status.HTTP_200_OK
+            )
         else:
-            return Response({"login": "False"}, status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError("username or password is incorrect")
 
 
 # logout
