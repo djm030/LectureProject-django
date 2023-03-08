@@ -42,6 +42,19 @@ class User(AbstractUser):
 
     password = models.CharField(
         max_length=100,
+    # pk 대신 사용
+    memberId = models.AutoField(primary_key=True)
+
+    # profile
+
+    nickname = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+        unique=True,
+    )
+    name = models.CharField(
+        max_length=30,
         null=True,
         blank=True,
     )
@@ -73,9 +86,16 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
+    phoneNumber = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+    )
 
     phoneNumber = models.CharField(
         max_length=20,
+    profileImg = models.URLField(
+        max_length=50,
         null=True,
         blank=True,
     )
@@ -94,5 +114,20 @@ class User(AbstractUser):
     isAdmin = models.BooleanField(
         default=False,
         null=True,
-        blank=True,
+        blank=True,)
+    # permission 영역
+    isInstructor = models.BooleanField(default=False),
+    # isAdmin = models.BooleanField(default=False)
+    # is_staff 로 대체
+    # is_superuser
+
+    # 제외 영역
+    first_name = models.CharField(
+        max_length=20,
+        editable=False,
+    )
+
+    last_name = models.CharField(
+        max_length=20,
+        editable=False,
     )
