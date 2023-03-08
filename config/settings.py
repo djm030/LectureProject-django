@@ -22,13 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()  # .env 파일을 불러옵니다.
-
-SECRET_KEY = os.getenv("SECRET_KEY")  # 시크릿 키를 불러옵니다.
-DEBUG = os.getenv("DEBUG")  # 디버그 모드를 불러옵니다.
+SECRET_KEY = "django-insecure-!^@0x5p7z_c5vg$&9o_7+n^kfx95!3#$h35%xy7bt3$kc62896"
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
