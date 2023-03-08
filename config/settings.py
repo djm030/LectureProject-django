@@ -31,7 +31,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-
 # Application definition
 
 SYSTEMED_APPS = [
@@ -47,6 +46,7 @@ CUSTOMED_APPS = [
     "users.apps.UsersConfig",
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
+    "categories.apps.CategoriesConfig",
 ]
 
 THIRDPARTY_APPS = [
