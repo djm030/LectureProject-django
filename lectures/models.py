@@ -52,6 +52,13 @@ class Lecture(CommonModel):
     # 좋아요 갯수
     likes = models.PositiveIntegerField(default=0)
 
-    class Meta:
-        def __str__(self):
-            return self.lectureTitle
+    def __str__(self):
+        return self.lectureTitle
+
+
+class calculatedLecture(CommonModel):
+    lecture = models.ForeignKey(
+        Lecture,
+        on_delete=models.CASCADE,
+        related_name="lecture_details",
+    )
