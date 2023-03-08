@@ -30,6 +30,7 @@ class UserAdmin(UserAdmin):
                     "is_superuser",
                     "groups",
                     "user_permissions",
+                    "is_staff",
                 ),
                 "classes": ("collapse",),
             },

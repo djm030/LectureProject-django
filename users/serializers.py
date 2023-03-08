@@ -32,4 +32,5 @@ class UserSignUpSerializer(ModelSerializer):
             "nickname",
             "phoneNumber",
             "dateBirth",
+            "gender",
         )

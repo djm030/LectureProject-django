@@ -51,3 +51,7 @@ class Lecture(CommonModel):
     lectureTotal = models.PositiveIntegerField(default=0)
     # 좋아요 갯수
     likes = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        def __str__(self):
+            return self.lectureTitle

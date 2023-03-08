@@ -22,11 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-SECRET_KEY = "django-insecure-!^@0x5p7z_c5vg$&9o_7+n^kfx95!3#$h35%xy7bt3$kc62896"
+import os
+from dotenv import load_dotenv
 
+load_dotenv()  # .env 파일을 불러옵니다.
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.getenv("SECRET_KEY")  # 시크릿 키를 불러옵니다.
+DEBUG = os.getenv("DEBUG")  # 디버그 모드를 불러옵니다.
 
 ALLOWED_HOSTS = []
 
@@ -47,7 +49,7 @@ CUSTOMED_APPS = [
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
     "categories.apps.CategoriesConfig",
-]
+    "videos.apps.VideosConfig",
 
 THIRDPARTY_APPS = [
     "rest_framework",
@@ -151,8 +153,10 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
