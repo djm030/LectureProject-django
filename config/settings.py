@@ -43,6 +43,7 @@ CUSTOMED_APPS = [
     "users.apps.UsersConfig",
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
+    "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
 ]
