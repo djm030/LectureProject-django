@@ -42,7 +42,6 @@ class User(AbstractUser):
         max_length=30,
         null=True,
         blank=True,
-        unique=True,
     )
     name = models.CharField(
         max_length=30,
@@ -105,9 +104,6 @@ class User(AbstractUser):
 
     # permission 영역
     isInstructor = models.BooleanField(default=False)
-    # isAdmin = models.BooleanField(default=False)
-    # is_staff 로 대체
-    # is_superuser
 
     # 제외 영역
     first_name = models.CharField(

@@ -1,4 +1,3 @@
-from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -8,20 +7,6 @@ from django.conf import settings
 from . import serializers
 from .models import User
 import jwt
-
-
-class Users(APIView):
-    def post(get, request):
-        password = request.data.get("password")
-        if not password:
-            raise ParseError
-        serializer = serializers.PrivateUserSerializer(data=request.data)
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import User
-from . import serializers
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
 
@@ -77,6 +62,7 @@ class UsersView(APIView):
             raise exceptions.ParseError("password is required")
 
         serializer = serializers.OneUserSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(password)
@@ -91,8 +77,9 @@ class UsersView(APIView):
 class UsernameView(APIView):
     def get(self, request, username):
         username = User.objects.filter(username=username)
+
         if username.exists():
-            return Response("이미 존재하는 아이디 입니다.")
+            return Response("중복된 아이디 입니다.", status=status.HTTP_200_OK)
         else:
             return Response("사용해도 좋습니다.", status=status.HTTP_200_OK)
 
