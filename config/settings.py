@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = "django-insecure-!^@0x5p7z_c5vg$&9o_7+n^kfx95!3#$h35%xy7bt3$kc62896"
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
 # Application definition
 
 SYSTEMED_APPS = [
@@ -44,10 +44,9 @@ CUSTOMED_APPS = [
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
     "ledetailes.apps.LedetailesConfig",
-    "categories.apps.CategoriesConfig",
     "videos.apps.VideosConfig",
+    "categories.apps.CategoriesConfig",
 ]
-
 
 THIRDPARTY_APPS = [
     "rest_framework",
