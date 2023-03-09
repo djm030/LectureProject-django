@@ -30,16 +30,6 @@ class User(AbstractUser):
             "Female",
         )
 
-    memberId = models.AutoField(
-        primary_key=True,
-    )
-
-    userId = models.CharField(
-        max_length=20,
-        null=True,
-        blank=True,
-    )
-
     password = models.CharField(
         max_length=100,
     )
@@ -52,7 +42,6 @@ class User(AbstractUser):
         max_length=30,
         null=True,
         blank=True,
-        unique=True,
     )
     name = models.CharField(
         max_length=30,
@@ -113,16 +102,8 @@ class User(AbstractUser):
         blank=True,
     )
 
-    isAdmin = models.BooleanField(
-        default=False,
-        null=True,
-        blank=True,
-    )
     # permission 영역
-    isInstructor = (models.BooleanField(default=False),)
-    # isAdmin = models.BooleanField(default=False)
-    # is_staff 로 대체
-    # is_superuser
+    isInstructor = models.BooleanField(default=False)
 
     # 제외 영역
     first_name = models.CharField(

@@ -4,7 +4,6 @@ from videos.serializers import VideoSerializer
 from users.serializers import UserSignUpSerializer
 
 
-
 class LectureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecture
@@ -22,10 +21,9 @@ class LectureSerializer(serializers.ModelSerializer):
 
 class LectureDetailSerializer(serializers.ModelSerializer):
 
-    lecture = LectureListSerializer(read_only=True)
+    lecture = LectureSerializer(read_only=True)
     # totalVideoLength = serializers.SerializerMethodField()
     # video = VideoSerializer()
-
 
     class Meta:
         model = calculatedLecture

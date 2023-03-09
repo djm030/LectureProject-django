@@ -1,25 +1,12 @@
-from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
+from django.conf import settings
 from . import serializers
 from .models import User
-
-
-class Users(APIView):
-    def post(get, request):
-        password = request.data.get("password")
-        if not password:
-            raise ParseError
-        serializer = serializers.PrivateUserSerializer(data=request.data)
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import User
-from . import serializers
+import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
 
@@ -75,6 +62,7 @@ class UsersView(APIView):
             raise exceptions.ParseError("password is required")
 
         serializer = serializers.OneUserSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(password)
@@ -89,10 +77,11 @@ class UsersView(APIView):
 class UsernameView(APIView):
     def get(self, request, username):
         username = User.objects.filter(username=username)
+
         if username.exists():
-            raise exceptions.ValidationError("이미 존재하는 아이디 입니다.")
+            return Response("중복된 아이디 입니다.", status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_200_OK)
+            return Response("사용해도 좋습니다.", status=status.HTTP_200_OK)
 
 
 ## 이메일 인증
@@ -127,3 +116,33 @@ class LogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response({"logout": "True"})
+
+
+# JWT login
+class JWTokenView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            raise exceptions.ParseError()
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+
+        if user:
+            token = jwt.encode(
+                {
+                    "id": user.memberId,
+                    "username": user.username,
+                },
+                settings.SECRET_KEY,
+                algorithm="HS256",
+            )
+            print(token)
+            return Response({"token": token})
+        else:
+            return exceptions.ValidationError("username or password is incorrect")
