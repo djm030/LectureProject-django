@@ -45,6 +45,7 @@ CUSTOMED_APPS = [
     "lectures.apps.LecturesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
+    "cart.apps.CartConfig",
 ]
 
 THIRDPARTY_APPS = [
