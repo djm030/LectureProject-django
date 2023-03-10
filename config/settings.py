@@ -41,17 +41,12 @@ SYSTEMED_APPS = [
 
 CUSTOMED_APPS = [
     "common.apps.CommonConfig",
-<<<<<<< HEAD
-    "users.apps.UsersConfig",
-    "lectures.apps.LecturesConfig",
-=======
     "lectures.apps.LecturesConfig",
     "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
     "qnas.apps.QnasConfig",
     "reviews.apps.ReviewsConfig",
->>>>>>> 8635767911e5135e624b04e9ca1cd276aa801718
 ]
 
 THIRDPARTY_APPS = [
