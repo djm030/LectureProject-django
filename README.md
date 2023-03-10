@@ -1,1 +1,0 @@
-# lectureproject-django

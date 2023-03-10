@@ -23,8 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = "django-insecure-!^@0x5p7z_c5vg$&9o_7+n^kfx95!3#$h35%xy7bt3$kc62896"
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -43,8 +41,17 @@ SYSTEMED_APPS = [
 
 CUSTOMED_APPS = [
     "common.apps.CommonConfig",
+<<<<<<< HEAD
     "users.apps.UsersConfig",
     "lectures.apps.LecturesConfig",
+=======
+    "lectures.apps.LecturesConfig",
+    "ledetailes.apps.LedetailesConfig",
+    "videos.apps.VideosConfig",
+    "categories.apps.CategoriesConfig",
+    "qnas.apps.QnasConfig",
+    "reviews.apps.ReviewsConfig",
+>>>>>>> 8635767911e5135e624b04e9ca1cd276aa801718
 ]
 
 THIRDPARTY_APPS = [
@@ -149,8 +156,10 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
