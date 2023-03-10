@@ -4,8 +4,4 @@ from .models import Category
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = (
-        "classification",
-        "name",
-        "order",
-    )
+    list_display = ("classification", "name", "order",)
