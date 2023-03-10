@@ -46,6 +46,8 @@ CUSTOMED_APPS = [
     "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
+    "qnas.apps.QnasConfig",
+    "reviews.apps.ReviewsConfig",
 ]
 
 THIRDPARTY_APPS = [
