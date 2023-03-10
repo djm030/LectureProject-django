@@ -46,6 +46,8 @@ CUSTOMED_APPS = [
     "ledetailes.apps.LedetailesConfig",
     "categories.apps.CategoriesConfig",
     "videos.apps.VideosConfig",
+    "informations.apps.InformationsConfig",
+    "activities.apps.ActivitiesConfig",
 ]
 
 

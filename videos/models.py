@@ -3,12 +3,7 @@ from common.models import CommonModel
 
 
 class Video(CommonModel):
-
     title = models.CharField(max_length=100)
-    lecture = models.ForeignKey(
-        "lectures.calculatedLecture",
-        on_delete=models.CASCADE,
-    )
     description = models.TextField()
     videoFile = models.URLField()
     videoLength = models.IntegerField(default=0)
