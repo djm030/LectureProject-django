@@ -46,6 +46,9 @@ CUSTOMED_APPS = [
     "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
+
+    "cart.apps.CartConfig",
+
     "qnas.apps.QnasConfig",
     "reviews.apps.ReviewsConfig",
 ]
