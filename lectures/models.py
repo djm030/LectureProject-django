@@ -35,22 +35,17 @@ class Lecture(CommonModel):
     LectureId = models.AutoField(primary_key=True)
 
     lectureTitle = models.CharField(max_length=100)
-    lectureDifficulty = models.CharField(
-        max_length=20,
-        choices=Difficulty.choices,
-    )
+    lectureDifficulty = models.CharField(max_length=100)
     lectureDescription = models.TextField(max_length=1000)
-    targetAudience = models.CharField(max_length=30)
-    lectureFee = models.PositiveIntegerField()
-    thumbnail = models.URLField()
-    lecturePeriod = models.DurationField()
+    lectureDifficulty = models.CharField(max_length=100)
+    targetAudience = models.CharField(max_length=100)
+    lectureFee = models.PositiveIntegerField(blank=True, null=True,)
+    thumbnail = models.URLField(blank=True, null=True,)
+    lecturePeriod = models.DateField(blank=True, null=True,)
     isOpened = models.BooleanField(default=True)
-    # 강의기간
-    lectureDuration = models.PositiveIntegerField(default=0)
-    # 강의 총 갯수
-    lectureTotal = models.PositiveIntegerField(default=0)
-    # 좋아요 갯수
-    likes = models.PositiveIntegerField(default=0)
+    likes = models.BooleanField(default=True)
+    lectureDuration = models.PositiveIntegerField(blank=True, null=True,)
+    lectureTotal = models.CharField(max_length=100, blank=True, null=True,)
 
     def __str__(self):
         return self.lectureTitle

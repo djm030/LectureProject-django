@@ -8,6 +8,7 @@ urlpatterns = [
     path("login", views.LoginView.as_view()),
     path("logout", views.LogoutView.as_view()),
     path("@<str:username>", views.UsernameView.as_view()),
+    path("jwttoken", views.JWTokenView.as_view()),
 ]
 ################################
 # url list
