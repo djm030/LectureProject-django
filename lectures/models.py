@@ -39,13 +39,33 @@ class Lecture(CommonModel):
     lectureDescription = models.TextField(max_length=1000)
     lectureDifficulty = models.CharField(max_length=100)
     targetAudience = models.CharField(max_length=100)
-    lectureFee = models.PositiveIntegerField(blank=True, null=True,)
-    thumbnail = models.URLField(blank=True, null=True,)
-    lecturePeriod = models.DateField(blank=True, null=True,)
+    lectureFee = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
+    thumbnail = models.URLField(
+        blank=True,
+        null=True,
+    )
+    lecturePeriod = models.DateField(
+        blank=True,
+        null=True,
+    )
     isOpened = models.BooleanField(default=True)
     likes = models.BooleanField(default=True)
-    lectureDuration = models.PositiveIntegerField(blank=True, null=True,)
-    lectureTotal = models.CharField(max_length=100, blank=True, null=True,)
+    lectureDuration = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
+    lectureTotal = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.lectureTitle
