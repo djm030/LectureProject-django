@@ -6,7 +6,7 @@ class Video(CommonModel):
 
     title = models.CharField(max_length=100)
     lecture = models.ForeignKey(
-        "lectures.Lecture",
+        "lectures.calculatedLecture",
         on_delete=models.CASCADE,
     )
     description = models.TextField()
