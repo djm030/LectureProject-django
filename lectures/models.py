@@ -62,7 +62,7 @@ class Lecture(CommonModel):
         blank=True,
         null=True,
     )
-    user = models.ForeignKey(
+    instructor = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
         related_name="lectures",

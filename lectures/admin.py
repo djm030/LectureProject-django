@@ -24,7 +24,7 @@ class LectureAdmin(admin.ModelAdmin):
                     "lectureDuration",
                     "lectureTotal",
                     "likes",
-                    "user",
+                    "instructor",
                     "categories",
                 )
             },

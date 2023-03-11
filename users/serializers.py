@@ -33,3 +33,13 @@ class UserSignUpSerializer(ModelSerializer):
             "dateBirth",
             "gender",
         )
+
+
+class InstructorSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "instructorField",
+            "instructorAbout",
+            "instructorCareer",
+        )
