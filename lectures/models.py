@@ -74,6 +74,7 @@ class Lecture(CommonModel):
         null=True,
         related_name="ledetailes",
     )
+    grade = models.PositiveIntegerField()
 
     def __str__(self):
         return self.lectureTitle
