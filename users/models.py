@@ -96,14 +96,20 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
+
+    # permission 영역
+
     isInstructor = models.BooleanField(
         default=False,
         null=True,
         blank=True,
     )
 
-    # permission 영역
-    isInstructor = models.BooleanField(default=False)
+    # 구매강의 영역
+    ledetaile = models.ManyToManyField(
+        "ledetailes.LeDetaile",
+        related_name="user",
+    )
 
     # 제외 영역
     first_name = models.CharField(
@@ -114,4 +120,21 @@ class User(AbstractUser):
     last_name = models.CharField(
         max_length=20,
         editable=False,
+    )
+
+    # 강사 영역
+    instructorField = models.CharField(
+        max_length=30,
+        blank=True,
+        null=True,
+    )
+    instructorAbout = models.TextField(
+        max_length=500,
+        blank=True,
+        default="",
+    )
+    instructorCareer = models.TextField(
+        max_length=50,
+        blank=True,
+        default="",
     )

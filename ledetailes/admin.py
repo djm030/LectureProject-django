@@ -5,7 +5,6 @@ from .models import LeDetaile
 @admin.register(LeDetaile)
 class LeDetaileAdmin(admin.ModelAdmin):
     list_display = (
-        "user",
         "lecture",
         "video",
     )

@@ -1,4 +1,3 @@
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -147,3 +146,24 @@ class JWTokenView(APIView):
             return Response({"token": token})
         else:
             return exceptions.ValidationError("username or password is incorrect")
+
+    # 강사 update
+
+
+class AddInstructor(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        serializer = serializers.InstructorSerializer(
+            user,
+            data=request.data,
+            partial=True,
+            #isInstructor =true 보내주기 요청 
+        )
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = serializers.InstructorSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

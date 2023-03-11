@@ -52,7 +52,7 @@ class Lecture(CommonModel):
         null=True,
     )
     isOpened = models.BooleanField(default=True)
-    likes = models.PositiveIntegerField()
+    likes = models.PositiveIntegerField(null=True, blank=True)
     lectureDuration = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -62,7 +62,7 @@ class Lecture(CommonModel):
         blank=True,
         null=True,
     )
-    user = models.ForeignKey(
+    instructor = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
         related_name="lectures",
@@ -74,6 +74,7 @@ class Lecture(CommonModel):
         null=True,
         related_name="ledetailes",
     )
+    grade = models.PositiveIntegerField()
 
     def __str__(self):
         return self.lectureTitle

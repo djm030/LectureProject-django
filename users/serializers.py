@@ -8,7 +8,6 @@ class OneUserSerializer(ModelSerializer):
         model = User
         exclude = [
             "password",
-            "isInstructor",
             "first_name",
             "last_name",
             "groups",
@@ -32,4 +31,14 @@ class UserSignUpSerializer(ModelSerializer):
             "phoneNumber",
             "dateBirth",
             "gender",
+        )
+
+
+class InstructorSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "instructorField",
+            "instructorAbout",
+            "instructorCareer",
         )
