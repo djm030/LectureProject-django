@@ -7,6 +7,11 @@ class Video(CommonModel):
     description = models.TextField()
     videoFile = models.URLField()
     videoLength = models.IntegerField(default=0)
+    ledetail = models.OneToOneField(
+        "ledetailes.LeDetaile",
+        on_delete=models.CASCADE,
+        related_name="video",
+    )
 
     def __str__(self):
         return self.title

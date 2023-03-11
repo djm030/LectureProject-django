@@ -6,6 +6,7 @@ class Cart(CommonModel):
     lecture = models.ForeignKey(
         "lectures.Lecture",
         on_delete=models.CASCADE,
+        related_name="cart",
     )
     rating = models.CharField(max_length=10)
 
