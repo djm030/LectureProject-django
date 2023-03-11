@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import CommonModel
 from users.models import User
+from ledetailes.models import LeDetaile
 
 # Create your models here.
 
@@ -17,3 +18,9 @@ class QnA(CommonModel):
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="qnas")
     like_users = models.ManyToManyField(User, blank=True, related_name="like_qnas")
+    lecture = models.ForeignKey(
+        LeDetaile,
+        on_delete=models.CASCADE,
+        blank=True,
+        related_name="qna",
+    )
