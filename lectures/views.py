@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ParseError
 from .models import Lecture
 from . import serializers
 from rest_framework import permissions
@@ -16,13 +16,16 @@ class Lectures(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = serializers.LectureSerializer(data=request.data)
-        if serializer.is_valid():
-            lecture = serializer.save()
-            serializer = serializers.LectureSerializer(lecture)
-            return Response(serializer.data)
+        if request.user.isInstructor:
+            serializer = serializers.LectureSerializer(data=request.data)
+            if serializer.is_valid():
+                lecture = serializer.save()
+                serializer = serializers.LectureSerializer(lecture)
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors)
         else:
-            return Response(serializer.errors)
+            raise ParseError
 
 
 class LecturesDetail(APIView):

@@ -26,6 +26,7 @@ class LectureAdmin(admin.ModelAdmin):
                     "likes",
                     "instructor",
                     "categories",
+                    "grade",
                 )
             },
         ),

@@ -16,11 +16,13 @@ class LectureSerializer(serializers.ModelSerializer):
             "lectureFee",
             "thumbnail",
             "isOpened",
+            "grade",
+            "instructor",
+            "categories",
         )
 
 
 class LectureDetailSerializer(serializers.ModelSerializer):
-
     lecture = LectureSerializer(read_only=True)
     # totalVideoLength = serializers.SerializerMethodField()
     # video = VideoSerializer()

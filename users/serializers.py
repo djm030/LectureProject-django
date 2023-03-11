@@ -8,7 +8,6 @@ class OneUserSerializer(ModelSerializer):
         model = User
         exclude = [
             "password",
-            "isInstructor",
             "first_name",
             "last_name",
             "groups",

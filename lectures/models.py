@@ -52,7 +52,7 @@ class Lecture(CommonModel):
         null=True,
     )
     isOpened = models.BooleanField(default=True)
-    likes = models.PositiveIntegerField()
+    likes = models.PositiveIntegerField(null=True, blank=True)
     lectureDuration = models.PositiveIntegerField(
         blank=True,
         null=True,

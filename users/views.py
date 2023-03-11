@@ -159,6 +159,7 @@ class AddInstructor(APIView):
             user,
             data=request.data,
             partial=True,
+            #isInstructor =true 보내주기 요청 
         )
         if serializer.is_valid():
             user = serializer.save()
