@@ -49,7 +49,6 @@ CUSTOMED_APPS = [
     "activities.apps.ActivitiesConfig",
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
-    "qnas.apps.QnasConfig",
     "reviews.apps.ReviewsConfig",
 ]
 
