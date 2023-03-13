@@ -16,6 +16,12 @@ class OneUserSerializer(ModelSerializer):
             "is_active",
             "last_login",
             "is_superuser",
+            "loginDate",
+            "lectureDate",
+            "paymentDate",
+            "isWithdrawn",
+            "created_at",
+            "Withdrawn_at",
         ]
 
 
@@ -34,6 +40,9 @@ class UserSignUpSerializer(ModelSerializer):
         )
 
 
+# 강사 관련
+
+
 class InstructorSerializer(ModelSerializer):
     class Meta:
         model = User
@@ -41,4 +50,21 @@ class InstructorSerializer(ModelSerializer):
             "instructorField",
             "instructorAbout",
             "instructorCareer",
+        )
+
+
+# ACTIVITE 관련
+
+
+class ActiviteSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "ledetaile",
+            "loginDate",
+            "lectureDate",
+            "paymentDate",
+            "isWithdrawn",
+            "created_at",
+            "Withdrawn_at",
         )
