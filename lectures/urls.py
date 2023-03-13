@@ -5,3 +5,5 @@ urlpatterns = [
     path("", views.Lectures.as_view()),
     path("<int:pk>", views.LecturesDetail.as_view()),
 ]
+
+

@@ -109,6 +109,8 @@ class User(AbstractUser):
     ledetaile = models.ManyToManyField(
         "ledetailes.LeDetaile",
         related_name="user",
+        null=True,
+        blank=True,
     )
 
     # 제외 영역
