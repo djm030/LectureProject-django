@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import AbstractUser
+from common.models import CommonModel
 
 # 모델
 # UserId VARCHAR
@@ -16,7 +17,19 @@ from django.contrib.auth.models import AbstractUser
 # Nickname VARCHAR
 
 
-class User(AbstractUser):
+class Activite(CommonModel):
+    loginDate = models.DateTimeField(auto_now=True)
+    lectureDate = models.DateTimeField(auto_now=True)
+    paymentDate = models.DateTimeField(auto_now=True)
+    isWithdrawn = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now=True)
+    Withdrawn_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class User(AbstractUser, Activite):
 
     """User Model Definition"""
 

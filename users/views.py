@@ -5,7 +5,7 @@ from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from . import serializers
-from .models import User
+from .models import User, Activite
 import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
@@ -168,3 +168,12 @@ class AddInstructor(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+
+class ActiviteView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = User.objects.get(memberId=request.user.memberId)
+        serializer = serializers.ActiviteSerializer(user)
+        return Response(serializer.data)

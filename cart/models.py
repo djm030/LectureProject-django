@@ -2,7 +2,7 @@ from django.db import models
 from common.models import CommonModel
 
 
-class Cart(CommonModel):
+class numCart(CommonModel):
     lecture = models.ForeignKey(
         "lectures.Lecture",
         on_delete=models.CASCADE,
