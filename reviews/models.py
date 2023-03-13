@@ -25,5 +25,11 @@ class Review(CommonModel):
         on_delete=models.CASCADE,
         related_name="reviews",
     )
-    rating = models.IntegerField()
+    title = models.CharField(
+        max_length=30,
+    )
+    rating = models.PositiveSmallIntegerField()
     content = models.TextField()
+
+    def __str__(self):
+        return self.title

@@ -8,11 +8,21 @@ from rest_framework import permissions
 
 
 class Lectures(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
     def get(self, request):
-        all_lectures = Lecture.objects.all()
-        serializer = serializers.LectureSerializer(all_lectures, many=True)
+        try:
+            page = request.query_params.get("page", 1)
+
+            page = int(page)
+        except ValueError:
+            page = 1
+        # settings 로 보낼것.
+        page_size = 30
+        start = (page - 1) * page_size
+        end = start + page_size
+
+        serializer = serializers.LectureSerializer(
+            Lecture.objects.all()[start:end], many=True
+        )
         return Response(serializer.data)
 
     def post(self, request):
@@ -25,7 +35,7 @@ class Lectures(APIView):
             else:
                 return Response(serializer.errors)
         else:
-            raise ParseError
+            raise ParseError()
 
 
 class LecturesDetail(APIView):
