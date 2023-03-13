@@ -55,11 +55,13 @@ CUSTOMED_APPS = [
 THIRDPARTY_APPS = [
     "rest_framework",
     "corsheaders",
+    "django_seed",
 ]
 
 INSTALLED_APPS = CUSTOMED_APPS + SYSTEMED_APPS + THIRDPARTY_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # 이 부분을 CommonMiddleware 앞에 위치시킵니다.
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -67,7 +69,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # 이 부분을 CommonMiddleware 앞에 위치시킵니다.
     "django.middleware.common.CommonMiddleware",
 ]
 
@@ -162,9 +163,27 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+## JWTAuthentication
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "config.authentication.JWTAuthentication",
     ],
 }
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "jwt",  # Add JWT header to allowed headers
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_ALL_HEADERS = True
