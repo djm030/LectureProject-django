@@ -11,6 +11,7 @@ class Video(CommonModel):
         "ledetailes.LeDetaile",
         on_delete=models.CASCADE,
         related_name="video",
+        
     )
 
     def __str__(self):
