@@ -7,6 +7,7 @@ class Cart(CommonModel):
         "lectures.Lecture",
         on_delete=models.CASCADE,
         related_name="cart",
+        null=True,
     )
     rating = models.CharField(max_length=10)
 
