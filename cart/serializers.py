@@ -5,4 +5,4 @@ from .models import Cart
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = "__all__"
+        exclude = ("user", "created_at", "updated_at")

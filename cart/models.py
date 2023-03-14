@@ -3,9 +3,8 @@ from common.models import CommonModel
 
 
 class Cart(CommonModel):
-    lecture = models.ForeignKey(
+    lecture = models.ManyToManyField(
         "lectures.Lecture",
-        on_delete=models.CASCADE,
         related_name="cart",
         blank=True,
         null=True,
