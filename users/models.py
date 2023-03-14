@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth.models import AbstractUser
+from common.models import CommonModel
 
 # 모델
 # UserId VARCHAR
@@ -16,7 +17,19 @@ from django.contrib.auth.models import AbstractUser
 # Nickname VARCHAR
 
 
-class User(AbstractUser):
+class Activite(CommonModel):
+    loginDate = models.DateTimeField(auto_now=True)
+    lectureDate = models.DateTimeField(auto_now=True)
+    paymentDate = models.DateTimeField(auto_now=True)
+    isWithdrawn = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now=True)
+    Withdrawn_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class User(AbstractUser, Activite):
 
     """User Model Definition"""
 
@@ -96,14 +109,22 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
+
+    # permission 영역
+
     isInstructor = models.BooleanField(
         default=False,
         null=True,
         blank=True,
     )
 
-    # permission 영역
-    isInstructor = models.BooleanField(default=False)
+    # 구매강의 영역
+    ledetaile = models.ManyToManyField(
+        "ledetailes.LeDetaile",
+        related_name="user",
+        null=True,
+        blank=True,
+    )
 
     # 제외 영역
     first_name = models.CharField(
@@ -114,4 +135,21 @@ class User(AbstractUser):
     last_name = models.CharField(
         max_length=20,
         editable=False,
+    )
+
+    # 강사 영역
+    instructorField = models.CharField(
+        max_length=30,
+        blank=True,
+        null=True,
+    )
+    instructorAbout = models.TextField(
+        max_length=500,
+        blank=True,
+        default="",
+    )
+    instructorCareer = models.TextField(
+        max_length=50,
+        blank=True,
+        default="",
     )

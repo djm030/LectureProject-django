@@ -1,4 +1,3 @@
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -6,7 +5,7 @@ from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from . import serializers
-from .models import User
+from .models import User, Activite
 import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
@@ -71,6 +70,7 @@ class UsersView(APIView):
             serializer = serializers.OneUserSerializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
+            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -147,3 +147,33 @@ class JWTokenView(APIView):
             return Response({"token": token})
         else:
             return exceptions.ValidationError("username or password is incorrect")
+
+    # 강사 update
+
+
+class AddInstructor(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        serializer = serializers.InstructorSerializer(
+            user,
+            data=request.data,
+            partial=True,
+            # isInstructor =true 보내주기 요청
+        )
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = serializers.InstructorSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+
+class ActiviteView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = User.objects.get(memberId=request.user.memberId)
+        serializer = serializers.ActiviteSerializer(user)
+        return Response(serializer.data)

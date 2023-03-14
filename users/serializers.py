@@ -8,7 +8,6 @@ class OneUserSerializer(ModelSerializer):
         model = User
         exclude = [
             "password",
-            "isInstructor",
             "first_name",
             "last_name",
             "groups",
@@ -17,6 +16,12 @@ class OneUserSerializer(ModelSerializer):
             "is_active",
             "last_login",
             "is_superuser",
+            "loginDate",
+            "lectureDate",
+            "paymentDate",
+            "isWithdrawn",
+            "created_at",
+            "Withdrawn_at",
         ]
 
 
@@ -32,4 +37,34 @@ class UserSignUpSerializer(ModelSerializer):
             "phoneNumber",
             "dateBirth",
             "gender",
+        )
+
+
+# 강사 관련
+
+
+class InstructorSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "instructorField",
+            "instructorAbout",
+            "instructorCareer",
+        )
+
+
+# ACTIVITE 관련
+
+
+class ActiviteSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "ledetaile",
+            "loginDate",
+            "lectureDate",
+            "paymentDate",
+            "isWithdrawn",
+            "created_at",
+            "Withdrawn_at",
         )

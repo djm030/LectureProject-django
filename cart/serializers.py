@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Cart
+from .models import numCart
 
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cart
-        exclude = ("user", "created_at", "updated_at")
+        model = numCart
+        fields = "__all__"

@@ -2,16 +2,10 @@ from django.db import models
 from common.models import CommonModel
 
 
-class Cart(CommonModel):
-    lecture = models.ManyToManyField(
+class numCart(CommonModel):
+    lecture = models.ForeignKey(
         "lectures.Lecture",
         related_name="cart",
-        blank=True,
-        null=True,
-    )
-    rating = models.CharField(
-        max_length=10,
-        blank=True,
         null=True,
     )
 

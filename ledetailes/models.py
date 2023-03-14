@@ -2,12 +2,7 @@ from django.db import models
 from common.models import CommonModel
 
 
-class LeDetail(CommonModel):
-    user = models.ForeignKey(
-        "users.User",
-        on_delete=models.CASCADE,
-        related_name="ledetailes",
-    )
+class LeDetaile(CommonModel):
     lecture = models.OneToOneField(
         "lectures.lecture",
         on_delete=models.CASCADE,

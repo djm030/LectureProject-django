@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Cart
+from .models import numCart
 
 
-@admin.register(Cart)
+@admin.register(numCart)
 class CartAdmin(admin.ModelAdmin):
     pass
