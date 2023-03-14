@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import LeDetaile
+from .models import LeDetail
 
 
-@admin.register(LeDetaile)
-class LeDetaileAdmin(admin.ModelAdmin):
+@admin.register(LeDetail)
+class LeDetailAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "lecture",

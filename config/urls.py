@@ -11,4 +11,5 @@ urlpatterns = [
     path("api/v1/videos/", include("videos.urls")),
     path("api/v1/reviews/", include("reviews.urls")),
     path("api/v1/cart/", include("cart.urls")),
+    path("api/v1/ledetail/", include("ledetail.urls")),
 ]
