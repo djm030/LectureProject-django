@@ -9,6 +9,4 @@ class Information(Activite):
         "users.User",
         on_delete=models.CASCADE,
         related_name="information",
-        blank=True,
-        null=True,
     )

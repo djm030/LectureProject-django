@@ -2,9 +2,13 @@ from rest_framework import serializers
 from .models import Lecture, calculatedLecture
 from videos.serializers import VideoSerializer
 from users.serializers import UserSignUpSerializer
-
+from reviews.serializers import ReviewSerializer
 
 class LectureSerializer(serializers.ModelSerializer):
+    
+    user = UserSignUpSerializer()
+    reviews = ReviewSerializer(many=True)
+
     class Meta:
         model = Lecture
         fields = (

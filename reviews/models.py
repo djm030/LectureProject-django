@@ -15,15 +15,19 @@ from users.models import User
 
 
 class Review(CommonModel):
-    lecture = models.ForeignKey(
-        Lecture,
-        on_delete=models.CASCADE,
-        related_name="reviews",
-    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="reviews",
     )
+
+    lecture = models.ForeignKey(
+        Lecture,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+    )
+
     rating = models.IntegerField()
     content = models.TextField()
