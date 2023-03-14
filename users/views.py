@@ -154,6 +154,11 @@ class JWTokenView(APIView):
 class AddInstructor(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    def get(self, request):
+        all_user = User.objects.all()
+        serializer = serializers.InstructorSerializer(all_user, many=True)
+        return Response(serializer.data)
+
     def put(self, request):
         user = request.user
         serializer = serializers.InstructorSerializer(

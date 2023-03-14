@@ -47,6 +47,7 @@ class InstructorSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = (
+            "username",
             "instructorField",
             "instructorAbout",
             "instructorCareer",

@@ -45,7 +45,6 @@ CUSTOMED_APPS = [
     "lectures.apps.LecturesConfig",
     "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
-    "informations.apps.InformationsConfig",
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
     "reviews.apps.ReviewsConfig",

@@ -11,6 +11,6 @@ class InformationView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        information = Information.objects.all()
-        serializer = serializers.InformationSerializer(information)
+        user = Information.objects.get(user=request.user)
+        serializer = serializers.InformationSerializer(user)
         return Response(serializer.data)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Lecture, calculatedLecture
 from videos.serializers import VideoSerializer
+
 from users.serializers import UserSignUpSerializer, OneUserSerializer
 from categories.serializers import CategorySerializer
 
@@ -8,6 +9,7 @@ from categories.serializers import CategorySerializer
 class LectureSerializer(serializers.ModelSerializer):
     instructor = OneUserSerializer()
     categories = CategorySerializer()
+
 
     class Meta:
         model = Lecture
