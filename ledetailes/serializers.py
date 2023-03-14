@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import LeDetail
+from .models import LeDetaile
 
 
 class LedetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LeDetail
+        model = LeDetaile
         fields = "__all__"

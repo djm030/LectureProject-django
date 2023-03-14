@@ -5,6 +5,7 @@ from common.models import CommonModel
 class numCart(CommonModel):
     lecture = models.ForeignKey(
         "lectures.Lecture",
+        on_delete=models.CASCADE,
         related_name="cart",
         null=True,
     )
