@@ -15,6 +15,8 @@ strawberry-graphql = {extras = ["debug-server"], version = "^0.159.0"}
 django-cors-headers = "^3.14.0"
 pyjwt = "^2.6.0"
 python-dotenv = "^1.0.0"
+faker = "^17.6.0"
+django-seed = "^0.3.1"
 
 
 [tool.poetry.group.dev.dependencies]
