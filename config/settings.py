@@ -54,7 +54,6 @@ CUSTOMED_APPS = [
 THIRDPARTY_APPS = [
     "rest_framework",
     "corsheaders",
-    "django_seed",
 ]
 
 INSTALLED_APPS = CUSTOMED_APPS + SYSTEMED_APPS + THIRDPARTY_APPS
