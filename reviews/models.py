@@ -29,13 +29,35 @@ class Review(CommonModel):
         related_name="reviews",
     )
 
-
     title = models.CharField(
         max_length=30,
+        null=True,
+        blank=True,
     )
     rating = models.PositiveSmallIntegerField()
 
     content = models.TextField()
 
     def __str__(self):
-        return self.title
+        return self.content
+
+
+class Reply(CommonModel):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reply",
+    )
+
+    reviews = models.ForeignKey(
+        Review,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reply",
+    )
+
+    content = models.TextField()
+
+    def __str__(self):
+        return self.content
