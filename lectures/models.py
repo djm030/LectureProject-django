@@ -1,5 +1,7 @@
 from django.db import models
 from common.models import CommonModel
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # 회원번호
 # 강의번호
@@ -80,9 +82,15 @@ class Lecture(CommonModel):
         return self.lectureTitle
 
 
-class calculatedLecture(CommonModel):
+class CalculatedLecture(CommonModel):
     lecture = models.ForeignKey(
         Lecture,
         on_delete=models.CASCADE,
         related_name="lecture",
     )
+
+
+@receiver(post_save, sender=Lecture)
+def create_Calculated_lecture(sender, instance, created, **kwargs):
+    if created:
+        CalculatedLecture.objects.create(lecture=instance)

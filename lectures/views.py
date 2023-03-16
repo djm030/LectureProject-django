@@ -103,7 +103,7 @@ class SearchLectures(APIView):
 class OneCategory(APIView):
     def get_CategoryObject(self, category1):
         try:
-            return Category.objects.get(name=category1)
+            return Category.objects.get(classification=category1)
         except Category.DoesNotExist:
             raise NotFound
 

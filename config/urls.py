@@ -10,5 +10,5 @@ urlpatterns = [
     path("api/v1/reviews/", include("reviews.urls")),
     path("api/v1/cart/", include("cart.urls")),
     path("api/v1/ledetaile/", include("ledetailes.urls")),
-    path("api/v1/accounts/", include("accounts.urls")),
+    # path("api/v1/accounts/", include("accounts.urls")),
 ]

@@ -49,7 +49,7 @@ CUSTOMED_APPS = [
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
     "reviews.apps.ReviewsConfig",
-    "accounts.apps.AccountsConfig",
+    # "accounts.apps.AccountsConfig",
 ]
 
 THIRDPARTY_APPS = [
@@ -167,7 +167,8 @@ CSRF_TRUSTED_ORIGINS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "config.authentication.JWTAuthentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
 CORS_ORIGIN_ALLOW_ALL = True
