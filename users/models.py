@@ -2,6 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 from common.models import CommonModel
+from cart.models import numCart
 
 # 모델
 # UserId VARCHAR
@@ -153,3 +154,12 @@ class User(AbstractUser, Activite):
         blank=True,
         default="",
     )
+
+    def __str__(self):
+        return self.username
+
+    def save(self, *args, **kwargs):
+        created = self.pk is None  # Check if the user is being created or updated
+        super().save(*args, **kwargs)
+        if created:
+            numCart.objects.create(user=self)
