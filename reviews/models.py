@@ -38,8 +38,8 @@ class Review(CommonModel):
 
     content = models.TextField()
 
-    def __str__(self):
-        return self.content
+    def str(self):
+        return self.title
 
 
 class Reply(CommonModel):
@@ -48,16 +48,7 @@ class Reply(CommonModel):
         on_delete=models.CASCADE,
         related_name="reply",
     )
-
-    reviews = models.ForeignKey(
-        Review,
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-        related_name="reply",
-    )
-
     content = models.TextField()
 
-    def __str__(self):
+    def str(self):
         return self.content

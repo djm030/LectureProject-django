@@ -10,7 +10,6 @@ from reviews.serializers import ReviewSerializer
 class LectureSerializer(serializers.ModelSerializer):
     instructor = OneUserSerializer()
     categories = CategorySerializer()
-    reviews = ReviewSerializer()
 
     class Meta:
         model = Lecture
