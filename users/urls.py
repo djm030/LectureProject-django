@@ -1,6 +1,11 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import urls
 from . import views
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework import routers
 
+router = routers.DefaultRouter()
+router.register("list", views.UserViewSet)  # 유저리스트 (테스트용)
 
 urlpatterns = [
     path("", views.UsersView.as_view()),
@@ -12,6 +17,9 @@ urlpatterns = [
     path("@<str:username>", views.UsernameView.as_view()),
     path("jwttoken", views.JWTokenView.as_view()),
     path("instructor", views.AddInstructor.as_view()),
+    path("register/", views.RegisterAPIView.as_view()),  # post - 회원가입
+    path("auth/", views.AuthAPIView.as_view()),  # post - 로그인, delete - 로그아웃, get - 유저정보
+    path("auth/refresh/", TokenRefreshView.as_view()),  # jwt 토큰 재발급
 ]
 ################################
 # url list

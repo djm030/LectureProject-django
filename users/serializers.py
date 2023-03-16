@@ -8,12 +8,8 @@ class OneUserSerializer(ModelSerializer):
         model = User
         exclude = [
             "password",
-            "first_name",
-            "last_name",
             "groups",
             "user_permissions",
-            "is_staff",
-            "is_active",
             "last_login",
             "is_superuser",
             "loginDate",
@@ -69,3 +65,16 @@ class ActiviteSerializer(ModelSerializer):
             "created_at",
             "Withdrawn_at",
         )
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            email=validated_data["email"],
+            password=validated_data["password"],
+        )
+        return user
