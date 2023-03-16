@@ -15,7 +15,7 @@ from users.models import User
 
 
 class Review(CommonModel):
-    author = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="reviews",
@@ -29,9 +29,10 @@ class Review(CommonModel):
         related_name="reviews",
     )
 
-
     title = models.CharField(
         max_length=30,
+        null=True,
+        blank=True,
     )
     rating = models.PositiveSmallIntegerField()
 
@@ -39,3 +40,24 @@ class Review(CommonModel):
 
     def __str__(self):
         return self.title
+
+
+class Reply(CommonModel):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reply",
+    )
+
+    review = models.ForeignKey(
+        Review,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reply",
+    )
+
+    content = models.TextField()
+
+    def __str__(self):
+        return self.content
