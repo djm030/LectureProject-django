@@ -4,12 +4,13 @@ from videos.serializers import VideoSerializer
 
 from users.serializers import UserSignUpSerializer, OneUserSerializer
 from categories.serializers import CategorySerializer
+from reviews.serializers import ReviewSerializer
 
 
 class LectureSerializer(serializers.ModelSerializer):
     instructor = OneUserSerializer()
     categories = CategorySerializer()
-
+    reviews = ReviewSerializer(many=True)
 
     class Meta:
         model = Lecture
@@ -25,12 +26,14 @@ class LectureSerializer(serializers.ModelSerializer):
             "grade",
             "instructor",
             "categories",
+            "reviews",
         )
         depth = 1
 
 
 class LectureDetailSerializer(serializers.ModelSerializer):
     lecture = LectureSerializer(read_only=True)
+
     # totalVideoLength = serializers.SerializerMethodField()
     # video = VideoSerializer()
 
