@@ -1,9 +1,25 @@
-from rest_framework.serializers import ModelSerializer
-from .models import Review
+from rest_framework import serializers
+from .models import Review, Reply
 from users.serializers import OneUserSerializer
 
 
-class ReviewSerializer(ModelSerializer):
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = "__all__"
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    reply = ReplySerializer(many=True)
     class Meta:
         model = Review
-        fields = "__all__"
+
+        fields = (
+            "user",
+            "lecture",
+            "title",
+            "rating",
+            "content",
+            "reply",
+        )

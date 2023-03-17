@@ -1,23 +1,30 @@
 from rest_framework import serializers
-from .models import Lecture, calculatedLecture
+from .models import Lecture, CalculatedLecture
 from videos.serializers import VideoSerializer
 
-from users.serializers import UserSignUpSerializer, OneUserSerializer
+from users.serializers import (
+    UserSignUpSerializer,
+    OneUserSerializer,
+    InstructorSerializer,
+)
 from categories.serializers import CategorySerializer
 from reviews.serializers import ReviewSerializer
 
 
 class LectureSerializer(serializers.ModelSerializer):
-    instructor = OneUserSerializer()
+    instructor = InstructorSerializer()
     categories = CategorySerializer()
+
+    reviews = ReviewSerializer(many=True)
+
 
     class Meta:
         model = Lecture
         fields = (
+            "LectureId",
             "lectureTitle",
             "lectureDifficulty",
             "lectureDescription",
-            "lectureDifficulty",
             "targetAudience",
             "lectureFee",
             "thumbnail",
@@ -27,16 +34,16 @@ class LectureSerializer(serializers.ModelSerializer):
             "categories",
             "reviews",
         )
-        depth = 1
 
 
 class LectureDetailSerializer(serializers.ModelSerializer):
     lecture = LectureSerializer(read_only=True)
+
     # totalVideoLength = serializers.SerializerMethodField()
     # video = VideoSerializer()
 
     class Meta:
-        model = calculatedLecture
+        model = CalculatedLecture
         fields = "__all__"
 
     # def get_totalVideoLength(self, obj):

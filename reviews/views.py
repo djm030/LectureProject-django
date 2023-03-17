@@ -16,3 +16,25 @@ class UserNameReview(APIView):
             raise NotFound
         serializer = ReviewSerializer(user_review, many=True)
         return Response(serializer.data)
+
+
+class ReviewView(APIView):
+    def get(self, request):
+        all_review = Review.objects.all()
+        serializer = ReviewSerializer(all_review, many=True)
+        return Response(serializer.data)
+
+    def put(self, request):
+        review = request.review
+        serializer = ReviewSerializer(
+            review,
+            data=request.data,
+            partial=True,
+            # isInstructor =true 보내주기 요청
+        )
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = ReviewSerializer(review)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

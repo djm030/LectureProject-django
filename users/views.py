@@ -9,7 +9,11 @@ from .models import User, Activite
 import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
+
 from django.core.mail import EmailMessage
+
+ 
+
 
 
 # 유저 프로필 관련 view
