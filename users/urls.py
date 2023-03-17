@@ -12,6 +12,7 @@ urlpatterns = [
     path("@<str:username>", views.UsernameView.as_view()),
     path("jwttoken", views.JWTokenView.as_view()),
     path("instructor", views.AddInstructor.as_view()),
+    path("send_email/", views.send_email, name="send_email"),
 ]
 ################################
 # url list

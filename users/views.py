@@ -9,7 +9,11 @@ from .models import User, Activite
 import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
+
+from django.core.mail import EmailMessage
+
  
+
 
 
 # 유저 프로필 관련 view
@@ -183,3 +187,12 @@ class ActiviteView(APIView):
         user = User.objects.get(memberId=request.user.memberId)
         serializer = serializers.ActiviteSerializer(user)
         return Response(serializer.data)
+
+
+def send_email(request):
+    subject = "message"
+    to = ["lee88067@naver.com"]
+    from_email = "lee88067@naver.com"
+    message = "메세지 테스트"
+    EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()
+    return Response(status=status.HTTP_200_OK)

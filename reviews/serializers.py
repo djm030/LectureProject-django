@@ -3,6 +3,7 @@ from .models import Review, Reply
 from users.serializers import OneUserSerializer
 
 
+
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
@@ -11,9 +12,9 @@ class ReplySerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     reply = ReplySerializer(many=True)
-
     class Meta:
         model = Review
+
         fields = (
             "user",
             "lecture",

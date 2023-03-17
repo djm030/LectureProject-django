@@ -14,7 +14,9 @@ from reviews.serializers import ReviewSerializer
 class LectureSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
     categories = CategorySerializer()
+
     reviews = ReviewSerializer(many=True)
+
 
     class Meta:
         model = Lecture

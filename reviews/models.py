@@ -38,16 +38,19 @@ class Review(CommonModel):
 
     content = models.TextField()
 
-    def __str__(self):
+    def str(self):
         return self.title
 
 
 class Reply(CommonModel):
+
     user = models.ForeignKey(
+
         User,
         on_delete=models.CASCADE,
         related_name="reply",
     )
+
 
     review = models.ForeignKey(
         Review,
