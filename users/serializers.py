@@ -69,3 +69,9 @@ class ActiviteSerializer(ModelSerializer):
             "created_at",
             "Withdrawn_at",
         )
+
+
+class UserNameSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username",)

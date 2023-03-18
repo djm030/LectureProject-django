@@ -15,6 +15,8 @@ class LectureSerializer(serializers.ModelSerializer):
     instructor = InstructorSerializer()
     categories = CategorySerializer()
     reviews = ReviewSerializer(many=True)
+    reviews_num = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
 
     class Meta:
         model = Lecture
@@ -31,6 +33,35 @@ class LectureSerializer(serializers.ModelSerializer):
             "instructor",
             "categories",
             "reviews",
+            "reviews_num",
+            "rating",
+        )
+
+    def get_reviews_num(self, object):
+        return object.reviews.count()
+
+    def get_rating(self, object):
+        return object.rating()
+
+
+class LectureListSerializer(serializers.ModelSerializer):
+    instructor = InstructorSerializer()
+    categories = CategorySerializer()
+
+    class Meta:
+        model = Lecture
+        fields = (
+            "LectureId",
+            "lectureTitle",
+            "lectureDifficulty",
+            "lectureDescription",
+            "targetAudience",
+            "lectureFee",
+            "thumbnail",
+            "isOpened",
+            "grade",
+            "instructor",
+            "categories",
         )
 
 

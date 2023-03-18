@@ -81,6 +81,17 @@ class Lecture(CommonModel):
     def __str__(self):
         return self.lectureTitle
 
+    def rating(self):
+        count = self.reviews.count()
+        if count == 0:
+            return 0
+        else:
+            total_rating = 0
+            # 최적화 하기 위해 self.reviews.all().values("rating) 으로 rating 값만 가져온다.
+            for review in self.reviews.all().values("rating"):
+                total_rating += review["rating"]
+            return round(total_rating / count, 2)
+
 
 class CalculatedLecture(CommonModel):
     lecture = models.ForeignKey(

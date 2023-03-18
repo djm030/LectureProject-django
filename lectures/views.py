@@ -26,17 +26,18 @@ class Lectures(APIView):
         end = start + page_size
         total_num = Lecture.objects.count()
         print(total_num)
-        serializer = serializers.LectureSerializer(
+        serializer = serializers.LectureListSerializer(
             Lecture.objects.all()[start:end], many=True
         )
+
         return Response({"data": serializer.data, "totalNum": total_num})
 
     def post(self, request):
         if request.user.isInstructor:
-            serializer = serializers.LectureSerializer(data=request.data)
+            serializer = serializers.LectureListSerializer(data=request.data)
             if serializer.is_valid():
                 lecture = serializer.save()
-                serializer = serializers.LectureSerializer(lecture)
+                serializer = serializers.LectureListSerializer(lecture)
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors)
@@ -60,7 +61,7 @@ class LecturesDetail(APIView):
 
     def put(self, request, pk):
         lecture = self.get_object(pk)
-        serializer = serializers.LectureSerializer(
+        serializer = serializers.LectureListSerializer(
             lecture,
             data=request.data,
             partial=True,
@@ -68,7 +69,7 @@ class LecturesDetail(APIView):
         if serializer.is_valid():
             updated_lecture = serializer.save()
             return Response(
-                serializers.LectureSerializer(updated_lecture).data,
+                serializers.LectureListSerializer(updated_lecture).data,
             )
         else:
             return Response(serializer.errors)
@@ -96,7 +97,7 @@ class SearchLectures(APIView):
         end = start + page_size
         paged_lectures = lectures[start:end]
         # Serialize results
-        serializer = serializers.LectureSerializer(paged_lectures, many=True)
+        serializer = serializers.LectureListSerializer(paged_lectures, many=True)
         return Response({"data": serializer.data, "totalNum": total_num})
 
 
@@ -109,6 +110,7 @@ class OneCategory(APIView):
             raise NotFound
 
     def get(self, request, category1):
+
         categories = self.get_CategoryObject(category1)
         union_query = None
         for category in categories:
@@ -125,30 +127,8 @@ class OneCategory(APIView):
         end = start + page_size
         paged_union_query = union_query[start:end]
         # Serialize results
-        serializer = serializers.LectureSerializer(paged_union_query, many=True)
+        serializer = serializers.LectureListSerializer(paged_union_query, many=True)
         return Response({"data": serializer.data, "totalNum": total_num})
-
-
-# class OneCategory(APIView):
-#     def get_CategoryObject(self, category1):
-#         try:
-#             return Category.objects.get(classification=category1)
-#         except Category.DoesNotExist:
-#             raise NotFound
-
-#     def get(self, request, category1):
-#         category = self.get_CategoryObject(category1)
-#         print(category)
-#         lectures = Lecture.objects.filter(categories=category)
-#         total_num = lectures.count()
-#         page_size = 30
-#         page = int(request.query_params.get("page", 1))
-#         start = (page - 1) * page_size
-#         end = start + page_size
-#         paged_lectures = lectures[start:end]
-#         # Serialize results
-#         serializer = serializers.LectureSerializer(paged_lectures, many=True)
-#         return Response({"data": serializer.data, "totalNum": total_num})
 
 
 class OneCategoryPage(APIView):
@@ -176,26 +156,8 @@ class OneCategoryPage(APIView):
         end = start + page_size
         paged_union_query = union_query[start:end]
         # Serialize results
-        serializer = serializers.LectureSerializer(paged_union_query, many=True)
+        serializer = serializers.LectureListSerializer(paged_union_query, many=True)
         return Response({"data": serializer.data, "totalNum": total_num})
-
-    # def get_CategoryObject(self, category1):
-    #     try:
-    #         return Category.objects.get(name=category1)
-    #     except Category.DoesNotExist:
-    #         raise NotFound
-
-    # def get(self, request, category1, pages):
-    #     category = self.get_CategoryObject(category1)
-    #     lectures = Lecture.objects.filter(categories=category)
-    #     total_num = lectures.count()
-    #     page_size = 30
-    #     start = (pages - 1) * page_size
-    #     end = start + page_size
-    #     paged_lectures = lectures[start:end]
-    #     # Serialize results
-    #     serializer = serializers.LectureSerializer(paged_lectures, many=True)
-    #     return Response({"data": serializer.data, "totalNum": total_num})
 
 
 class TwoCategory(APIView):
@@ -216,7 +178,7 @@ class TwoCategory(APIView):
         end = start + page_size
         paged_lectures = lectures[start:end]
         # Serialize results
-        serializer = serializers.LectureSerializer(paged_lectures, many=True)
+        serializer = serializers.LectureListSerializer(paged_lectures, many=True)
         return Response({"data": serializer.data, "totalNum": total_num})
 
 
@@ -238,7 +200,7 @@ class TwoCategoryPage(APIView):
         end = start + page_size
         paged_lectures = lectures[start:end]
         # Serialize results
-        serializer = serializers.LectureSerializer(paged_lectures, many=True)
+        serializer = serializers.LectureListSerializer(paged_lectures, many=True)
         return Response({"data": serializer.data, "totalNum": total_num})
 
 
