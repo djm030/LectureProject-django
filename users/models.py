@@ -3,6 +3,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
+    AbstractUser,
 )
 from common.models import CommonModel
 from cart.models import numCart
@@ -34,19 +35,19 @@ class Activite(CommonModel):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password, **kwargs):
-        if not email:
+    def create_user(self, username, password, **kwargs):
+        if not username:
             raise ValueError("Users must have an email address")
         user = self.model(
-            email=email,
+            username=username,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email=None, password=None, **extra_fields):
+    def create_superuser(self, username=None, password=None, **extra_fields):
         superuser = self.create_user(
-            email=email,
+            username=username,
             password=password,
         )
 
@@ -71,6 +72,13 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
             "female",
             "Female",
         )
+
+    username = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+        unique=True,
+    )
 
     password = models.CharField(
         max_length=100,
@@ -102,11 +110,10 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         null=True,
         blank=True,
     )
-    email = models.EmailField(
+    email = models.CharField(
         max_length=30,
         null=True,
         blank=True,
-        unique=True,
     )
     dateBirth = models.DateField(
         null=True,
@@ -181,11 +188,17 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         default="",
     )
 
+    is_staff = models.BooleanField(
+        ("staff status"),
+        default=True,
+        help_text=("Designates whether the user can log into this admin site."),
+    )
+
     # 헬퍼 클래스 사용
     objects = UserManager()
 
     # 사용자의 username field는 email으로 설정 (이메일로 로그인)
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "username"
 
     def save(self, *args, **kwargs):
         created = self.pk is None  # Check if the user is being created or updated
