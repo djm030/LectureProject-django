@@ -4,7 +4,4 @@ from .models import LeDetaile
 
 @admin.register(LeDetaile)
 class LeDetailAdmin(admin.ModelAdmin):
-    list_display = (
-        "lecture",
-        "video",
-    )
+    list_display = ("lecture",)

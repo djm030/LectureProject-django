@@ -12,6 +12,10 @@ urlpatterns = [
     path("@<str:username>", views.UsernameView.as_view()),
     path("jwttoken", views.JWTokenView.as_view()),
     path("instructor", views.AddInstructor.as_view()),
+    path(
+        "calculated-lectures/<int:lectureId>/",
+        views.AddCalculateLecturesView.as_view(),
+    ),
 ]
 ################################
 # url list

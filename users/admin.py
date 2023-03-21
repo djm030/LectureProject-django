@@ -19,6 +19,7 @@ class UserAdmin(UserAdmin):
                     "gender",
                     "phoneNumber",
                     "profileImg",
+                    "calculatedLecture",
                 )
             },
         ),

@@ -75,3 +75,12 @@ class UserNameSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ("username",)
+
+
+class UserLedetaileSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "calculatedLecture",
+        )

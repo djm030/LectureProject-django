@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Review, Reply
-from users.serializers import OneUserSerializer, UserNameSerializer
+from users.serializers import UserNameSerializer
 
 
 class ReplySerializer(serializers.ModelSerializer):
@@ -55,7 +55,7 @@ class ReviewMakeSerializer(serializers.ModelSerializer):
         exclude = ("title",)
 
 
-class ReplySerializer(serializers.ModelSerializer):
+class ReplymakeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = ("content",)

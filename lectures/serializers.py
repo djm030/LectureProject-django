@@ -1,17 +1,15 @@
 from rest_framework import serializers
 from .models import Lecture, CalculatedLecture
 from videos.serializers import VideoSerializer
-
-from users.serializers import (
-    UserSignUpSerializer,
-    OneUserSerializer,
-    InstructorSerializer,
-)
 from categories.serializers import CategorySerializer
 from reviews.serializers import ReviewSerializer
 
 
 class LectureSerializer(serializers.ModelSerializer):
+    from users.serializers import (
+        InstructorSerializer,
+    )
+
     instructor = InstructorSerializer()
     categories = CategorySerializer()
     reviews = ReviewSerializer(many=True)
@@ -43,8 +41,19 @@ class LectureSerializer(serializers.ModelSerializer):
     def get_rating(self, object):
         return object.rating()
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret["reviews"] = ReviewSerializer(
+            instance.reviews.order_by("-id"), many=True
+        ).data
+        return ret
+
 
 class LectureListSerializer(serializers.ModelSerializer):
+    from users.serializers import (
+        InstructorSerializer,
+    )
+
     instructor = InstructorSerializer()
     categories = CategorySerializer()
 
@@ -68,17 +77,6 @@ class LectureListSerializer(serializers.ModelSerializer):
 class LectureDetailSerializer(serializers.ModelSerializer):
     lecture = LectureSerializer(read_only=True)
 
-    # totalVideoLength = serializers.SerializerMethodField()
-    # video = VideoSerializer()
-
     class Meta:
         model = CalculatedLecture
         fields = "__all__"
-
-    # def get_totalVideoLength(self, obj):
-    #     video_lengths = [video.length for video in obj.videos.all()]
-    #     print(video_lengths)
-    #     total_length = sum(video_lengths)
-    #     total_length_in_seconds = total_length.total_seconds()
-
-    #     return total_length_in_seconds

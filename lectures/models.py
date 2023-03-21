@@ -100,6 +100,9 @@ class CalculatedLecture(CommonModel):
         related_name="lecture",
     )
 
+    def __str__(self):
+        return f"{self.lecture.lectureTitle}'s 결제 모델"
+
 
 @receiver(post_save, sender=Lecture)
 def create_Calculated_lecture(sender, instance, created, **kwargs):

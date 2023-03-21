@@ -9,12 +9,11 @@ from .models import User, Activite
 import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
- 
-
+from lectures.models import Lecture, CalculatedLecture
 
 # 유저 프로필 관련 view
 class UserProfileView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         user = User.objects.get(memberId=request.user.memberId)
@@ -183,3 +182,37 @@ class ActiviteView(APIView):
         user = User.objects.get(memberId=request.user.memberId)
         serializer = serializers.ActiviteSerializer(user)
         return Response(serializer.data)
+
+
+# 강의 추가 모델
+
+
+class AddCalculateLecturesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_calculate_lectures(self, lectureId):
+        try:
+            lecture = Lecture.objects.get(LectureId=lectureId)
+            return CalculatedLecture.objects.get(lecture=lecture)
+        except Lecture.DoesNotExist:
+            raise ValueError
+
+    def get(self, request, lectureId):
+        user = request.user
+        serializer = serializers.UserLedetaileSerializer(user)
+        return Response(serializer.data)
+
+    def put(self, request, lectureId):
+        try:
+            calculated_lecture = self.get_calculate_lectures(lectureId)
+            print(calculated_lecture)
+            user = request.user
+
+            user.calculatedLecture.add(calculated_lecture)
+
+            serializer = serializers.UserLedetaileSerializer(user)
+            print(serializer.data)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except (User.DoesNotExist, ValueError):
+            return Response(status=status.HTTP_400_BAD_REQUEST)

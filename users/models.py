@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from common.models import CommonModel
 from cart.models import numCart
+from lectures.models import CalculatedLecture
 
 # 모델
 # UserId VARCHAR
@@ -120,10 +121,15 @@ class User(AbstractUser, Activite):
     )
 
     # 구매강의 영역
-    ledetaile = models.ManyToManyField(
-        "ledetailes.LeDetaile",
+    # ledetaile = models.ManyToManyField(
+    #     CalculatedLecture,
+    #     related_name="user",
+    #     null=True,
+    #     blank=True,
+    # )
+    calculatedLecture = models.ManyToManyField(
+        CalculatedLecture,
         related_name="user",
-        null=True,
         blank=True,
     )
 

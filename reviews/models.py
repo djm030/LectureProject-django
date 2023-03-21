@@ -39,7 +39,7 @@ class Review(CommonModel):
     content = models.TextField()
 
     def __str__(self):
-        return self.title
+        return self.content
 
 
 class Reply(CommonModel):

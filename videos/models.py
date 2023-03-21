@@ -1,5 +1,6 @@
 from django.db import models
 from common.models import CommonModel
+from lectures.models import CalculatedLecture
 
 
 class Video(CommonModel):
@@ -7,11 +8,11 @@ class Video(CommonModel):
     description = models.TextField()
     videoFile = models.URLField()
     videoLength = models.IntegerField(default=0)
-    ledetail = models.OneToOneField(
-        "ledetailes.LeDetaile",
+    calculatedLecture = models.ForeignKey(
+        CalculatedLecture,
         on_delete=models.CASCADE,
         related_name="video",
-        
+        null=True,
     )
 
     def __str__(self):
