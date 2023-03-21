@@ -16,6 +16,23 @@ class ReplySerializer(serializers.ModelSerializer):
         return obj.created_at.strftime("%Y-%m-%d %H:%M:%S")
 
     class Meta:
+        model = Review
+        exclude = (
+            "title",
+            "lecture",
+        )
+        # (
+        #     "user",
+        #     "lecture",
+        #     "title",
+        #     "rating",
+        #     "content",
+        #     "reply",
+        # )
+
+
+class ReviewMakeSerializer(serializers.ModelSerializer):
+    class Meta:
         model = Reply
         fields = "__all__"
 
@@ -33,23 +50,6 @@ class ReviewSerializer(serializers.ModelSerializer):
 
         return obj.created_at.strftime("%Y-%m-%d %H:%M:%S")
 
-    class Meta:
-        model = Review
-        exclude = (
-            "title",
-            "lecture",
-        )
-        # (
-        #     "user",
-        #     "lecture",
-        #     "title",
-        #     "rating",
-        #     "content",
-        #     "reply",
-        # )
-
-
-class ReviewMakeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         exclude = ("title",)

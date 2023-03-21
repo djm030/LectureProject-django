@@ -43,6 +43,7 @@ class Review(CommonModel):
 
 
 class Reply(CommonModel):
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
