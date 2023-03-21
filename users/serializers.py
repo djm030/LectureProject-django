@@ -23,6 +23,7 @@ class OneUserSerializer(ModelSerializer):
             "created_at",
             "Withdrawn_at",
         ]
+        depth = 2
 
 
 # 로그인 관련 serializer
