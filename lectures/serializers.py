@@ -12,11 +12,9 @@ class LectureSerializer(serializers.ModelSerializer):
 
     instructor = InstructorSerializer()
     categories = CategorySerializer()
-
     reviews = ReviewSerializer(many=True)
     reviews_num = serializers.SerializerMethodField()
     rating = serializers.SerializerMethodField()
-
 
     class Meta:
         model = Lecture
