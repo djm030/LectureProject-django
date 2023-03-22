@@ -20,6 +20,7 @@ urlpatterns = [
     path("register/", views.RegisterAPIView.as_view()),  # post - 회원가입
     path("auth/", views.AuthAPIView.as_view()),  # post - 로그인, delete - 로그아웃, get - 유저정보
     path("auth/refresh/", TokenRefreshView.as_view()),  # jwt 토큰 재발급
+    path("password/", include("django.contrib.auth.urls")),
 ]
 ################################
 # url list

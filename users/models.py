@@ -114,6 +114,7 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         max_length=30,
         null=True,
         blank=True,
+        unique=True,
     )
     dateBirth = models.DateField(
         null=True,
@@ -192,6 +193,15 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         ("staff status"),
         default=True,
         help_text=("Designates whether the user can log into this admin site."),
+    )
+
+    is_active = models.BooleanField(
+        ("active"),
+        default=True,
+        help_text=(
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+        ),
     )
 
     # 헬퍼 클래스 사용

@@ -221,3 +221,22 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_ALL_HEADERS = True
+
+# email
+# 메일을 보내는 호스트 서버
+EMAIL_HOST = "smtp.gmail.com"
+
+# ENAIL_HOST에 정의된 SMTP 서버가 사용하는 포트 (587: TLS/STARTTLS용 포트)
+EMAIL_PORT = "587"
+
+#  발신할 이메일 주소 '~@gmail.com'
+EMAIL_HOST_USER = "kimnamwook08@gmail.com"
+
+# 발신할 이메일 비밀번호 (2단계 인증일경우 앱 비밀번호)
+EMAIL_HOST_PASSWORD = "ymadhdipllytsfkr"
+
+# TLS 보안 방법 (SMPT 서버와 통신할 떄 TLS (secure) connection 을 사용할지 말지 여부)
+EMAIL_USE_TLS = True
+
+# 사이트와 a관련한 자동응답을 받을 이메일 주소
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
