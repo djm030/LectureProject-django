@@ -10,7 +10,7 @@ from categories.serializers import CategorySerializer
 from django.conf import settings
 from users.models import User
 
-# 
+
 class Lectures(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 

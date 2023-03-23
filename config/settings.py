@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from . import my_settings
+import pymysql
+
+pymysql.install_as_MySQLdb()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,7 +54,7 @@ CUSTOMED_APPS = [
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
     "reviews.apps.ReviewsConfig",
-    # "accounts.apps.AccountsConfig",
+    "account.apps.AccountConfig",
 ]
 
 THIRDPARTY_APPS = [
@@ -189,13 +194,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_ALL_HEADERS = True
 
+# DATABASES = my_settings.DATABASES
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.naver.com"
-EMAIL_HOST_USER = "lee88067@naver.com"
-EMAIL_HOST_PASSWORD = "1648audu!"
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-DEFAULT_FROM_MAIL = EMAIL_HOST_USER
-
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+EMAIL_BACKEND = my_settings.EMAIL["EMAIL_BACKEND"]
+EMAIL_USE_TLS = my_settings.EMAIL["EMAIL_USE_TLS"]
+EMAIL_PORT = my_settings.EMAIL["EMAIL_PORT"]
+EMAIL_HOST = my_settings.EMAIL["EMAIL_HOST"]
+EMAIL_HOST_USER = my_settings.EMAIL["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = my_settings.EMAIL["EMAIL_HOST_PASSWORD"]
+SERVER_EMAIL = my_settings.EMAIL["SERVER_EMAIL"]
