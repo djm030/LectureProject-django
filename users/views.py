@@ -279,7 +279,7 @@ class AuthAPIView(APIView):
         )
         # 이미 회원가입 된 유저일 때
         if user is not None:
-            login(request, user)
+            # login(request, user)
             serializer = serializers.UserSerializer(user)
             # jwt 토큰 접근
             token = TokenObtainPairSerializer.get_token(user)
@@ -312,7 +312,7 @@ class AuthAPIView(APIView):
         )
         response.delete_cookie("access")
         response.delete_cookie("refresh")
-        logout(request)
+        logout(request, request.user)
         return response
 
 

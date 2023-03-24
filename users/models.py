@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
 )
 from common.models import CommonModel
 from cart.models import numCart
+from lectures.models import CalculatedLecture
 
 # 모델
 # UserId VARCHAR
@@ -156,6 +157,11 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         "ledetailes.LeDetaile",
         related_name="user",
         null=True,
+        blank=True,
+    )
+    calculatedLecture = models.ManyToManyField(
+        CalculatedLecture,
+        related_name="user",
         blank=True,
     )
 
