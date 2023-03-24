@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from .models import User, Activite
 from rest_framework import status, exceptions, permissions
+from rest_framework.permissions import AllowAny
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404
@@ -304,6 +305,7 @@ class AuthAPIView(APIView):
 
     # 로그아웃
     def delete(self, request):
+        permission_classes = (AllowAny,)
         # 쿠키에 저장된 토큰 삭제 => 로그아웃 처리
         response = Response(
             {"message": "Logout success"}, status=status.HTTP_202_ACCEPTED
@@ -317,6 +319,5 @@ class AuthAPIView(APIView):
 # jwt 토근 인증 확인용 뷰셋
 # Header - Authorization : Bearer <발급받은토큰>
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
