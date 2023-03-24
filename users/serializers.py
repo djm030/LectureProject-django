@@ -8,12 +8,8 @@ class OneUserSerializer(ModelSerializer):
         model = User
         exclude = [
             "password",
-            "first_name",
-            "last_name",
             "groups",
             "user_permissions",
-            "is_staff",
-            "is_active",
             "last_login",
             "is_superuser",
             "loginDate",
@@ -24,6 +20,7 @@ class OneUserSerializer(ModelSerializer):
             "Withdrawn_at",
         ]
         depth = 4
+
 
 
 # 로그인 관련 serializer
@@ -70,6 +67,30 @@ class ActiviteSerializer(ModelSerializer):
             "created_at",
             "Withdrawn_at",
         )
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        exclude = [
+            "groups",
+            "user_permissions",
+            "last_login",
+            "is_superuser",
+            "loginDate",
+            "lectureDate",
+            "paymentDate",
+            "isWithdrawn",
+            "created_at",
+            "Withdrawn_at",
+        ]
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            password=validated_data["password"],
+        )
+        return user
 
 
 class UserNameSerializer(ModelSerializer):
