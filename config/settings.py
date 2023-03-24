@@ -199,3 +199,13 @@ EMAIL_PORT = 587
 DEFAULT_FROM_MAIL = EMAIL_HOST_USER
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+
+## s3 account
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_ACCESS_KEY_ID = "aBJHJuX2vKKLDUqKgL4n"
+AWS_SECRET_ACCESS_KEY = "ULkDVlfr5C6ycGIDrI8hCPC9uIy1xgWNNNOZ4vE9"
+AWS_STORAGE_BUCKET_NAME = "lecture-site-video"
+AWS_S3_REGION_NAME = "ap-northeast-2"
+AWS_S3_ENDPOINT_URL = "https://kr.object.ncloudstorage.com"

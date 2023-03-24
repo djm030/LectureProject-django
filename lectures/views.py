@@ -10,7 +10,8 @@ from categories.serializers import CategorySerializer
 from django.conf import settings
 from users.models import User
 
-# 
+
+#
 class Lectures(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -367,6 +368,3 @@ class InstructorName(APIView):
             raise NotFound
         serializer = serializers.LectureDetailSerializer(user_lecture, many=True)
         return Response(serializer.data)
-
-
-# 리뷰 기반으로 특정 게시글을 불러오는 API
