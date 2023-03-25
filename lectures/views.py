@@ -10,7 +10,8 @@ from categories.serializers import CategorySerializer
 from django.conf import settings
 from users.models import User
 
-# 
+
+#
 class Lectures(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -369,4 +370,29 @@ class InstructorName(APIView):
         return Response(serializer.data)
 
 
-# 리뷰 기반으로 특정 게시글을 불러오는 API
+
+
+class MainPage(APIView):
+    def get(self, request):
+        # Get all lectures
+        lectures = Lecture.objects.all()
+        # Get all categories
+        categories = Category.objects.all()
+        # Get all instructors
+        instructors = User.objects.all()
+        # Get all tags
+        # tags = Tag.objects.all()
+        # Serialize results
+        serializer_lectures = serializers.LectureListSerializer(lectures, many=True)
+        # serializer_categories = serializers.CategorySerializer(categories, many=True)
+        # serializer_instructors = serializers.InstructorSerializer(instructors, many=True)
+        # serializer_tags = serializers.TagSerializer(tags, many=True)
+        # Construct the response
+        return Response(
+            {
+                "lectures": serializer_lectures.data,
+                # "categories": serializer_categories.data,
+                # "instructors": serializer_instructors.data,
+                # "tags": serializer_tags.data,
+            }
+        )

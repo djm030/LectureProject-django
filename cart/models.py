@@ -20,3 +20,6 @@ class numCart(CommonModel):
 
     class Meta:
         verbose_name_plural = "Cart"
+
+    def __str__(self):
+        return f"{self.user.username}"

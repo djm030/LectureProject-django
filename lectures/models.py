@@ -92,13 +92,24 @@ class Lecture(CommonModel):
                 total_rating += review["rating"]
             return round(total_rating / count, 2)
 
+    def total_student(self):
+        calculated_lecture = self.calculatedlecture.first()
+        total_num = calculated_lecture.total_num()
+        return total_num
+
 
 class CalculatedLecture(CommonModel):
     lecture = models.ForeignKey(
         Lecture,
         on_delete=models.CASCADE,
-        related_name="lecture",
+        related_name="calculatedlecture",
     )
+    
+    def lecture_title(self):
+        return self.lecture.lectureTitle
+
+    def total_num(self):
+        return self.user.count()
 
     def __str__(self):
         return f"{self.lecture.lectureTitle}'s 결제 모델"
