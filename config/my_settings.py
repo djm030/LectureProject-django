@@ -25,7 +25,7 @@ EMAIL = {
     "EMAIL_PORT": 587,
     "EMAIL_HOST": "smtp.naver.com",
     "EMAIL_HOST_USER": "lee88067@naver.com",
-    "EMAIL_HOST_PASSWORD": "1648audu!",
+    "EMAIL_HOST_PASSWORD": "Tuzuku0823!!",
     "SERVER_EMAIL": "Gmail ID",
     "REDIRECT_PAGE": "https://www.naver.com",
 }

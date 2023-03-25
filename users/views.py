@@ -10,6 +10,8 @@ import jwt
 from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
 from lectures.models import Lecture, CalculatedLecture
+from django.shortcuts import render, redirect
+
 
 # 유저 프로필 관련 view
 class UserProfileView(APIView):
@@ -51,6 +53,38 @@ class UserPasswordView(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+# 아이디 찾기
+def find_id(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            message = "해당 이메일로 가입된 사용자가 없습니다."
+            return render(request, "find_id.html", {"message": message})
+        else:
+            message = f"아이디는 {user.username}입니다."
+            return render(request, "find_id.html", {"message": message})
+    else:
+        return render(request, "find_id.html")
+
+
+# 비밀번호 찾기
+def find_password(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            message = "해당 이메일로 가입된 사용자가 없습니다."
+            return render(request, "find_password.html", {"message": message})
+        else:
+            message = f"아이디는 {user.password}입니다."
+            return render(request, "find_password.html", {"message": message})
+    else:
+        return render(request, "find_password.html")
 
 
 # 유저 회원가입 관련 view

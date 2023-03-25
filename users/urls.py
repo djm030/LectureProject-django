@@ -16,6 +16,8 @@ urlpatterns = [
         "calculated-lectures/<int:lectureId>/",
         views.AddCalculateLecturesView.as_view(),
     ),
+    path("find_id/", views.find_id, name="find_id"),
+    path("find_password/", views.find_password, name="find_password"),
 ]
 ################################
 # url list

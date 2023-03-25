@@ -1,0 +1,10 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="email">가입 시 등록한 이메일을 입력하세요:</label>
+    <input type="email" name="email" id="email" required>
+    <button type="submit">아이디 찾기</button>
+</form>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
