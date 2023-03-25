@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions, exceptions
 from . import serializers
 from lectures.models import Lecture, CalculatedLecture
-
+from watchedlectures.models import WatchedLecture
 from django.core.files.storage import default_storage
 from moviepy.video.io.VideoFileClip import VideoFileClip
 import os
@@ -113,6 +113,11 @@ class VideosLists(APIView):
         cal_lec = CalculatedLecture.objects.get(lecture=lecture)
         videos = Video.objects.filter(calculatedLecture=cal_lec)
         totalLength = 0
+        try:
+            log = WatchedLecture.objects.get(lecture=cal_lec, lecture_num=num)
+            lastPlayed = log.lastPlayed
+        except WatchedLecture.DoesNotExist:
+            lastPlayed = 0
         for video in videos:
             totalLength += video.videoLength
         listserializer = serializers.VideoListSerializer(videos, many=True)
@@ -122,6 +127,7 @@ class VideosLists(APIView):
                 "list": listserializer.data,
                 "url": videoFile.data,
                 "totalLength": totalLength,
+                "lastPlayed": lastPlayed,
             },
             status=status.HTTP_200_OK,
         )

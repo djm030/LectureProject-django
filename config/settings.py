@@ -50,6 +50,7 @@ CUSTOMED_APPS = [
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
     "reviews.apps.ReviewsConfig",
+    "watchedlectures.apps.WatchedlecturesConfig",
     # "accounts.apps.AccountsConfig",
 ]
 
