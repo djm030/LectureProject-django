@@ -30,7 +30,7 @@ class Lectures(APIView):
 
         # settings 로 보낼것.
         print(search_query)
-        page_size = 30
+        page_size = 20
         start = (page - 1) * page_size
         end = start + page_size
         lectures = Lecture.objects.filter(lectureTitle__icontains=search_query)
@@ -103,7 +103,7 @@ class SearchLectures(APIView):
         # Apply category filter if specified
         # Paginate results
         total_num = lectures.count()
-        page_size = 30
+        page_size = 20
         page = int(request.query_params.get("page", 1))
         start = (page - 1) * page_size
         end = start + page_size
@@ -142,7 +142,7 @@ class OneCategory(APIView):
         # Get page number from query parameters
         page = int(request.query_params.get("page", 1))
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 20
         start = (page - 1) * page_size
         end = start + page_size
         # Slice the data based on start and end indices
@@ -180,7 +180,7 @@ class OneCategoryPage(APIView):
         # Count the total number of lectures
         total_num = union_query.count()
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 20
         start = (pages - 1) * page_size
         end = start + page_size
         # Slice the data based on start and end indices
@@ -211,7 +211,7 @@ class TwoCategory(APIView):
         # Count the total number of lectures
         total_num = lectures.count()
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 20
         page = int(request.query_params.get("page", 1))
         start = (page - 1) * page_size
         end = start + page_size
@@ -243,7 +243,7 @@ class TwoCategoryPage(APIView):
         # Count the total number of lectures
         total_num = lectures.count()
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 20
         start = (pages - 1) * page_size
         end = start + page_size
         # Slice the data based on start and end indices
