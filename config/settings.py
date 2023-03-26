@@ -38,20 +38,18 @@ SYSTEMED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "django.contrib.sites",
+    "django.contrib.sites",
 ]
-
+SITE_ID = 1
 CUSTOMED_APPS = [
     "users.apps.UsersConfig",
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
-    # "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
     "reviews.apps.ReviewsConfig",
     "watchedlectures.apps.WatchedlecturesConfig",
-    # "accounts.apps.AccountsConfig",
 ]
 
 THIRDPARTY_APPS = [
@@ -181,7 +179,7 @@ REST_FRAMEWORK = {
         "config.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        # "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
 }
 CORS_ORIGIN_ALLOW_ALL = True

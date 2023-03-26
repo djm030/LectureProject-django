@@ -1,5 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from .models import User
+from rest_framework import serializers
+from watchedlectures.serializers import WatchedLectureSerializer
 
 
 # 프로필 관련 serializer
@@ -23,7 +25,7 @@ class OneUserSerializer(ModelSerializer):
             "created_at",
             "Withdrawn_at",
         ]
-        depth = 4
+        depth = 3
 
 
 # 로그인 관련 serializer

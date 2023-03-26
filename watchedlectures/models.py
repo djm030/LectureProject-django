@@ -15,12 +15,11 @@ class WatchedLecture(CommonModel):
     lecture_num = models.IntegerField()
 
     lastPlayed = models.FloatField(blank=True, null=True, default=0)
-    duration = models.DurationField(blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        if self.lastPlayed is not None:
-            self.duration = timedelta(milliseconds=self.lastPlayed)
-        super(WatchedLecture, self).save(*args, **kwargs)
+    is_completed = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = (("user", "lecture", "lecture_num"),)
 
     def __str__(self):
         return f"{self.user} watched {self.lecture}"

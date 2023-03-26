@@ -9,8 +9,9 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 import os
 import boto3
 from django.conf import settings
-
+from users.models import User
 from .models import Video
+from watchedlectures.models import WatchedLecture
 
 
 class VideoList(APIView):
@@ -108,19 +109,37 @@ class UploadVideoView(APIView):
 # lectureId를 받아서 해당하는 강의의 모든 비디오를 가져오는 클래스
 class VideosLists(APIView):
     def get(self, request, lectureId, num):
-        num = num - 1
+        num -= 1
         lecture = Lecture.objects.get(LectureId=lectureId)
         cal_lec = CalculatedLecture.objects.get(lecture=lecture)
         videos = Video.objects.filter(calculatedLecture=cal_lec)
         totalLength = 0
+        user = User.objects.get(username=request.user.username)
+        video_num = len(videos)
+        print(video_num)
         try:
-            log = WatchedLecture.objects.get(lecture=cal_lec, lecture_num=num)
+            log = WatchedLecture.objects.get(
+                user=user, lecture=cal_lec, lecture_num=num + 1
+            )
+            print(log.lastPlayed)
             lastPlayed = log.lastPlayed
         except WatchedLecture.DoesNotExist:
             lastPlayed = 0
+        is_completed_list = []
+        for i in range(0, video_num):
+            try:
+                is_completed = WatchedLecture.objects.get(
+                    user=user, lecture=cal_lec, lecture_num=i
+                ).is_completed
+            except WatchedLecture.DoesNotExist:
+                is_completed = False
+            is_completed_list.append(is_completed)
+        # print(is_completed_list)
         for video in videos:
             totalLength += video.videoLength
         listserializer = serializers.VideoListSerializer(videos, many=True)
+        for i in range(0, len(listserializer.data)):
+            listserializer.data[i]["is_completed"] = is_completed_list[i]
         videoFile = serializers.VideoDetailSerializer(videos[num])
         return Response(
             {

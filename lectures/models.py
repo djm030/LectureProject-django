@@ -104,7 +104,7 @@ class CalculatedLecture(CommonModel):
         on_delete=models.CASCADE,
         related_name="calculatedlecture",
     )
-    
+
     def lecture_title(self):
         return self.lecture.lectureTitle
 

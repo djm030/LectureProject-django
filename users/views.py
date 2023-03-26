@@ -11,14 +11,37 @@ from rest_framework import status, exceptions, permissions
 from django.contrib.auth import authenticate, login, logout
 from lectures.models import Lecture, CalculatedLecture
 
+
 # 유저 프로필 관련 view
 class UserProfileView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         user = User.objects.get(memberId=request.user.memberId)
         serializer = serializers.OneUserSerializer(user)
-        return Response(serializer.data)
+        cal_lectures = user.calculatedLecture.all()
+        lecture_count = len(cal_lectures)
+        is_completed_list = []
+        is_completed_dict = {}
+        for cal_lec in cal_lectures:
+            for i in range(1, lecture_count + 1):
+                try:
+                    is_completed = WatchedLecture.objects.get(
+                        user=user, lecture=cal_lec, lecture_num=i
+                    ).is_completed
+                except WatchedLecture.DoesNotExist:
+                    is_completed = False
+                is_completed_list.append(is_completed)
+
+            percent = is_completed_list.count(True) / len(is_completed_list) * 100
+            is_completed_list = []
+            is_completed_dict.update({cal_lec.lecture.lectureTitle: percent})
+
+        # Add is_completed_dict to serializer.data dictionary
+        response_data = serializer.data.copy()
+        response_data["is_completed_dict"] = is_completed_dict
+
+        return Response(response_data)
 
     def put(self, request):
         user = request.user
@@ -76,6 +99,8 @@ class UsersView(APIView):
 
 ## username 유효성 판단
 class UsernameView(APIView):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request, username):
         username = User.objects.filter(username=username)
 
@@ -216,3 +241,48 @@ class AddCalculateLecturesView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except (User.DoesNotExist, ValueError):
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+from watchedlectures.models import WatchedLecture
+
+
+# 유저 프로필 관련 view
+class UsertempProfileView(APIView):
+    def get(self, request):
+        user = User.objects.get(memberId=request.user.memberId)
+        serializer = serializers.OneUserSerializer(user)
+        cal_lectures = user.calculatedLecture.all()
+        lecture_count = len(cal_lectures)
+        is_completed_list = []
+        is_completed_dict = {}
+        for cal_lec in cal_lectures:
+            for i in range(1, lecture_count + 1):
+                try:
+                    is_completed = WatchedLecture.objects.get(
+                        user=user, lecture=cal_lec, lecture_num=i
+                    ).is_completed
+                except WatchedLecture.DoesNotExist:
+                    is_completed = False
+                is_completed_list.append(is_completed)
+            percent = is_completed_list.count(True) / len(is_completed_list) * 100
+            is_completed_dict.update({cal_lec.lecture.lectureTitle: percent})
+
+        # Add is_completed_dict to serializer.data dictionary
+        response_data = serializer.data.copy()
+        response_data["is_completed_dict"] = is_completed_dict
+
+        return Response(response_data)
+
+    def put(self, request):
+        user = request.user
+        serializer = serializers.OneUserSerializer(
+            user,
+            data=request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = serializers.OneUserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

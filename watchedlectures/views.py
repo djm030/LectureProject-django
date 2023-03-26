@@ -12,7 +12,9 @@ class WatchedLectureView(APIView):
         try:
             lecture = Lecture.objects.get(LectureId=lectureId)
             cal_lec = CalculatedLecture.objects.get(lecture=lecture)
-            log = WatchedLecture.objects.get(lecture=cal_lec, lecture_num=num)
+            log = WatchedLecture.objects.get(
+                lecture=cal_lec, lecture_num=num, user=request.user
+            )
             serializer = serializers.WatchedLectureSerializer(log)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except (Lecture.DoesNotExist, WatchedLecture.DoesNotExist):
@@ -22,18 +24,27 @@ class WatchedLectureView(APIView):
         try:
             lecture = Lecture.objects.get(LectureId=lectureId)
             cal_lec = CalculatedLecture.objects.get(lecture=lecture)
-            user = User.objects.get(memberId=request.user.memberId)
-            log = WatchedLecture.objects.get(lecture=cal_lec, lecture_num=num)
-        except WatchedLecture.DoesNotExist:
-            user = User.objects.get(memberId=request.user.memberId)
-            log = WatchedLecture.objects.create(
+            user = User.objects.get(username=request.user.username)
+            log, _ = WatchedLecture.objects.get_or_create(
                 user=user, lecture=cal_lec, lecture_num=num
+            )
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except:
+            return Response(
+                {"error": "Something went wrong"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
         serializer = serializers.WatchedLectureSerializer(
             log, data=request.data, partial=True
         )
         if serializer.is_valid():
-            serializer.save()
+            log = serializer.save()
+            serializer = serializers.WatchedLectureSerializer(log)
+            print(serializer.data)
+
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

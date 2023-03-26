@@ -7,6 +7,7 @@ from .serializers import (
     ReviewMakeSerializer,
     ReplySerializer,
     ReplymakeSerializer,
+    ReviewmainpageSerializer,
 )
 from rest_framework.exceptions import ParseError, NotFound
 from lectures.models import Lecture
@@ -27,8 +28,8 @@ class UserNameReview(APIView):
 class ReviewView(APIView):
     def get(self, request, lectureId):
         lecture = Lecture.objects.get(LectureId=lectureId)
-        all_review = Review.objects.filter(lecture=lecture)
-        serializer = ReviewSerializer(all_review, many=True)
+        all_review = Review.objects.filter(lecture=lecture, rating__gte=4)
+        serializer = ReviewmainpageSerializer(all_review, many=True)
         return Response(serializer.data)
 
     def post(self, request, lectureId):
