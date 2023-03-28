@@ -20,6 +20,9 @@ from django.dispatch import receiver
 
 # Create your models here.
 class Lecture(CommonModel):
+    class Meta:
+        db_table = "lecture"
+
     class Difficulty(models.TextChoices):
         EASY = (
             "easy",
@@ -36,12 +39,12 @@ class Lecture(CommonModel):
 
     LectureId = models.AutoField(primary_key=True)
 
-    lectureTitle = models.CharField(max_length=100)
-    lectureDifficulty = models.CharField(max_length=100)
-    lectureDescription = models.TextField(max_length=1000)
-    lectureDifficulty = models.CharField(max_length=100)
-    targetAudience = models.CharField(max_length=100)
-    lectureFee = models.PositiveIntegerField(
+    lectureTitle = models.CharField(max_length=100, null=True, blank=True)
+    lectureDifficulty = models.CharField(max_length=100, null=True, blank=True)
+    lectureDescription = models.TextField(max_length=1000, null=True, blank=True)
+    lectureDifficulty = models.CharField(max_length=100, null=True, blank=True)
+    targetAudience = models.CharField(max_length=100, null=True, blank=True)
+    lectureFee = models.TextField(
         blank=True,
         null=True,
     )
@@ -68,6 +71,8 @@ class Lecture(CommonModel):
         "users.User",
         on_delete=models.CASCADE,
         related_name="lectures",
+        null=True,
+        blank=True,
     )
 
     categories = models.ForeignKey(
@@ -76,7 +81,10 @@ class Lecture(CommonModel):
         null=True,
         related_name="ledetailes",
     )
-    grade = models.PositiveIntegerField()
+    grade = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.lectureTitle
