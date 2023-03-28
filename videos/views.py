@@ -129,17 +129,18 @@ class VideosLists(APIView):
         for i in range(0, video_num):
             try:
                 is_completed = WatchedLecture.objects.get(
-                    user=user, lecture=cal_lec, lecture_num=i
+                    user=user, lecture=cal_lec, lecture_num=i + 1
                 ).is_completed
             except WatchedLecture.DoesNotExist:
                 is_completed = False
             is_completed_list.append(is_completed)
-        # print(is_completed_list)
+
         for video in videos:
             totalLength += video.videoLength
         listserializer = serializers.VideoListSerializer(videos, many=True)
         for i in range(0, len(listserializer.data)):
             listserializer.data[i]["is_completed"] = is_completed_list[i]
+
         videoFile = serializers.VideoDetailSerializer(videos[num])
         return Response(
             {
