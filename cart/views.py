@@ -16,7 +16,7 @@ class CartView(APIView):
 
     def put(self, request):
         user = request.user
-        serializer = serializers.ActivitCartSerializereSerializer(
+        serializer = serializers.CartSerializer(
             user,
             data=request.data,
             partial=True,
