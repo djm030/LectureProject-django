@@ -54,6 +54,7 @@ THIRDPARTY_APPS = [
     "rest_framework",
     "corsheaders",
     "rest_framework_simplejwt",
+    "crispy_forms",
 ]
 
 INSTALLED_APPS = CUSTOMED_APPS + SYSTEMED_APPS + THIRDPARTY_APPS
@@ -240,3 +241,5 @@ EMAIL_USE_TLS = True
 
 # 사이트와 a관련한 자동응답을 받을 이메일 주소
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"

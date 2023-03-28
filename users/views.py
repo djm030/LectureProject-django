@@ -13,12 +13,23 @@ from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from .models import User, Activite
 from rest_framework import status, exceptions, permissions
-
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from config.settings import SECRET_KEY
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import get_user_model
+from django.contrib import auth
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.db.models.query_utils import Q
+from django.contrib.auth.tokens import default_token_generator
+
+from django.core.mail import EmailMessage, send_mail, BadHeaderError
+from django.contrib.auth.forms import PasswordResetForm
 
 
 # 유저 프로필 관련 view
@@ -222,8 +233,7 @@ class RegisterAPIView(APIView):
             # # jwt 토큰 => 쿠키에 저장
             res.set_cookie("access", access_token, httponly=True)
             res.set_cookie("refresh", refresh_token, httponly=True)
-            
-            
+
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -309,3 +319,41 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
+
+def password_reset_request(request):
+    if request.method == "POST":
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data["email"]
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = "/password_reset_email.txt"
+                    c = {
+                        "email": user.email,
+                        "domain": "127.0.0.1:8000",
+                        "site_name": "Website",
+                        "uid": urlsafe_base64_encode(force_str(user.pk)),
+                        "user": user,
+                        "token": default_token_generator.make_token(user),
+                        "protocol": "http",
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(
+                            subject,
+                            email,
+                            "lee88067@gmail.com",
+                            [user.email],
+                            fail_silently=False,
+                        )
+                    except BadHeaderError:
+                        return HttpResponse("Invalid header found.")
+                    return redirect("/password_reset/done/")
+    password_reset_form = PasswordResetForm()
+    return render(
+        request=request,
+        template_name="/password_reset.html",
+        context={"/password_reset_form": password_reset_form},
+    )
