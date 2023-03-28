@@ -19,8 +19,6 @@ from django.contrib.auth import authenticate, login, logout
 from lectures.models import Lecture, CalculatedLecture
 
 
-
-
 # 유저 프로필 관련 view
 class UserProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -370,3 +368,34 @@ class UsertempProfileView(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+
+class AddCalculateLecturesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_calculate_lectures(self, lectureId):
+        try:
+            lecture = Lecture.objects.get(LectureId=lectureId)
+            return CalculatedLecture.objects.get(lecture=lecture)
+        except Lecture.DoesNotExist:
+            raise ValueError
+
+    def get(self, request, lectureId):
+        user = request.user
+        serializer = serializers.UserLedetaileSerializer(user)
+        return Response(serializer.data)
+
+    def put(self, request, lectureId):
+        try:
+            calculated_lecture = self.get_calculate_lectures(lectureId)
+            print(calculated_lecture)
+            user = request.user
+
+            user.calculatedLecture.add(calculated_lecture)
+
+            serializer = serializers.UserLedetaileSerializer(user)
+            print(serializer.data)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except (User.DoesNotExist, ValueError):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
