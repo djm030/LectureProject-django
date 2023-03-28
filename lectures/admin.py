@@ -46,9 +46,18 @@ class VideoInline(admin.StackedInline):
 
 @admin.register(CalculatedLecture)
 class CalculatedLectureAdmin(admin.ModelAdmin):
-    fields = [
+    fields = (
         "lecture",
-    ]
+        "total_num",
+    )
+
+    readonly_fields = ("total_num",)
+
+    def total_num(self, obj):
+        return obj.total_num()
+
+    total_num.short_description = "Total Number of Users"
+
     inlines = [
         VideoInline,
     ]

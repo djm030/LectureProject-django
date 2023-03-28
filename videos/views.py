@@ -3,14 +3,15 @@ from rest_framework.response import Response
 from rest_framework import status, permissions, exceptions
 from . import serializers
 from lectures.models import Lecture, CalculatedLecture
-
+from watchedlectures.models import WatchedLecture
 from django.core.files.storage import default_storage
 from moviepy.video.io.VideoFileClip import VideoFileClip
 import os
 import boto3
 from django.conf import settings
-
+from users.models import User
 from .models import Video
+from watchedlectures.models import WatchedLecture
 
 
 class VideoList(APIView):
@@ -102,4 +103,51 @@ class UploadVideoView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(
             {"error": "File not provided"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+# lectureId를 받아서 해당하는 강의의 모든 비디오를 가져오는 클래스
+class VideosLists(APIView):
+    def get(self, request, lectureId, num):
+        num -= 1
+        lecture = Lecture.objects.get(LectureId=lectureId)
+        cal_lec = CalculatedLecture.objects.get(lecture=lecture)
+        videos = Video.objects.filter(calculatedLecture=cal_lec)
+        totalLength = 0
+        user = User.objects.get(username=request.user.username)
+        video_num = len(videos)
+        print(video_num)
+        try:
+            log = WatchedLecture.objects.get(
+                user=user, lecture=cal_lec, lecture_num=num + 1
+            )
+            print(log.lastPlayed)
+            lastPlayed = log.lastPlayed
+        except WatchedLecture.DoesNotExist:
+            lastPlayed = 0
+        is_completed_list = []
+        for i in range(0, video_num):
+            try:
+                is_completed = WatchedLecture.objects.get(
+                    user=user, lecture=cal_lec, lecture_num=i + 1
+                ).is_completed
+            except WatchedLecture.DoesNotExist:
+                is_completed = False
+            is_completed_list.append(is_completed)
+
+        for video in videos:
+            totalLength += video.videoLength
+        listserializer = serializers.VideoListSerializer(videos, many=True)
+        for i in range(0, len(listserializer.data)):
+            listserializer.data[i]["is_completed"] = is_completed_list[i]
+
+        videoFile = serializers.VideoDetailSerializer(videos[num])
+        return Response(
+            {
+                "list": listserializer.data,
+                "url": videoFile.data,
+                "totalLength": totalLength,
+                "lastPlayed": lastPlayed,
+            },
+            status=status.HTTP_200_OK,
         )

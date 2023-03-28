@@ -16,10 +16,9 @@ from rest_framework import status, exceptions, permissions
 from rest_framework.permissions import AllowAny
 
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, get_object_or_404
-from config.settings import SECRET_KEY
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from lectures.models import Lecture, CalculatedLecture
+
+
 
 
 # 유저 프로필 관련 view
@@ -29,7 +28,29 @@ class UserProfileView(APIView):
     def get(self, request):
         user = User.objects.get(username=request.user.username)
         serializer = serializers.OneUserSerializer(user)
-        return Response(serializer.data)
+        cal_lectures = user.calculatedLecture.all()
+        lecture_count = len(cal_lectures)
+        is_completed_list = []
+        is_completed_dict = {}
+        for cal_lec in cal_lectures:
+            for i in range(1, lecture_count + 1):
+                try:
+                    is_completed = WatchedLecture.objects.get(
+                        user=user, lecture=cal_lec, lecture_num=i
+                    ).is_completed
+                except WatchedLecture.DoesNotExist:
+                    is_completed = False
+                is_completed_list.append(is_completed)
+
+            percent = is_completed_list.count(True) / len(is_completed_list) * 100
+            is_completed_list = []
+            is_completed_dict.update({cal_lec.lecture.lectureTitle: percent})
+
+        # Add is_completed_dict to serializer.data dictionary
+        response_data = serializer.data.copy()
+        response_data["is_completed_dict"] = is_completed_dict
+
+        return Response(response_data)
 
     def put(self, request):
         user = request.user
@@ -87,6 +108,8 @@ class UsersView(APIView):
 
 ## username 유효성 판단
 class UsernameView(APIView):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request, username):
         username = User.objects.filter(username=username)
 
@@ -303,21 +326,47 @@ class AuthAPIView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    # 로그아웃
-    def delete(self, request):
-        permission_classes = (AllowAny,)
-        # 쿠키에 저장된 토큰 삭제 => 로그아웃 처리
-        response = Response(
-            {"message": "Logout success"}, status=status.HTTP_202_ACCEPTED
+
+from watchedlectures.models import WatchedLecture
+
+
+# 유저 프로필 관련 view
+class UsertempProfileView(APIView):
+    def get(self, request):
+        user = User.objects.get(memberId=request.user.memberId)
+        serializer = serializers.OneUserSerializer(user)
+        cal_lectures = user.calculatedLecture.all()
+        lecture_count = len(cal_lectures)
+        is_completed_list = []
+        is_completed_dict = {}
+        for cal_lec in cal_lectures:
+            for i in range(1, lecture_count + 1):
+                try:
+                    is_completed = WatchedLecture.objects.get(
+                        user=user, lecture=cal_lec, lecture_num=i
+                    ).is_completed
+                except WatchedLecture.DoesNotExist:
+                    is_completed = False
+                is_completed_list.append(is_completed)
+            percent = is_completed_list.count(True) / len(is_completed_list) * 100
+            is_completed_dict.update({cal_lec.lecture.lectureTitle: percent})
+
+        # Add is_completed_dict to serializer.data dictionary
+        response_data = serializer.data.copy()
+        response_data["is_completed_dict"] = is_completed_dict
+
+        return Response(response_data)
+
+    def put(self, request):
+        user = request.user
+        serializer = serializers.OneUserSerializer(
+            user,
+            data=request.data,
+            partial=True,
         )
-        response.delete_cookie("access")
-        response.delete_cookie("refresh")
-        logout(request, request.user)
-        return response
-
-
-# jwt 토근 인증 확인용 뷰셋
-# Header - Authorization : Bearer <발급받은토큰>
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = serializers.UserSerializer
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = serializers.OneUserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

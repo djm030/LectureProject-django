@@ -38,23 +38,33 @@ SYSTEMED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
 ]
-
+SITE_ID = 1
 CUSTOMED_APPS = [
     "users.apps.UsersConfig",
     "common.apps.CommonConfig",
     "lectures.apps.LecturesConfig",
-    "ledetailes.apps.LedetailesConfig",
     "videos.apps.VideosConfig",
     "categories.apps.CategoriesConfig",
     "cart.apps.CartConfig",
     "reviews.apps.ReviewsConfig",
-    # "accounts.apps.AccountsConfig",
+    "watchedlectures.apps.WatchedlecturesConfig",
 ]
 
 THIRDPARTY_APPS = [
-    "rest_framework",
     "corsheaders",
+    "rest_framework",
+    ## django-rest-auth
+    "rest_framework.authtoken",
+    "rest_framework_simplejwt",
+    # "rest_framework_simplejwt.token_blacklist",
+    # "dj_rest_auth",
+    # "dj_rest_auth.registration",
+    # ## django-allauth
+    # "allauth",
+    # "allauth.account",
+    # "allauth.socialaccount",
 ]
 
 INSTALLED_APPS = CUSTOMED_APPS + SYSTEMED_APPS + THIRDPARTY_APPS
@@ -166,46 +176,12 @@ CSRF_TRUSTED_ORIGINS = [
 
 # jwt 토큰은 simplejwt의 JWTAuthentication으로 인증한다.
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "config.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        # "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        # 'rest_framework.permissions.IsAuthenticated', # 인증된 사용자만 접근
-        # 'rest_framework.permissions.IsAdminUser', # 관리자만 접근
-        "rest_framework.permissions.AllowAny",  # 누구나 접근
-    ),
-}
-
-from datetime import datetime, timedelta
-
-# 추가적인 JWT 설정, 다 쓸 필요는 없지만 혹시 몰라서 다 넣었다.
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": False,
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": None,
-    "AUDIENCE": None,
-    "ISSUER": None,
-    "JWK_URL": None,
-    "LEEWAY": 0,
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",
-    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
-    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-    "JTI_CLAIM": "jti",
-    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+        # "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ],
 }
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -255,3 +231,25 @@ AWS_SECRET_ACCESS_KEY = "ULkDVlfr5C6ycGIDrI8hCPC9uIy1xgWNNNOZ4vE9"
 AWS_STORAGE_BUCKET_NAME = "lecture-site-video"
 AWS_S3_REGION_NAME = "ap-northeast-2"
 AWS_S3_ENDPOINT_URL = "https://kr.object.ncloudstorage.com"
+
+
+## JWT SETTINGS
+REST_USE_JWT = True
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "SIGNING_KEY": SECRET_KEY,
+    "ALGORITHM": "HS256",
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "VERIFYING_KEY": None,
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "memberId",
+    "USER_ID_CLAIM": "username",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.UntypedToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "JTI_CLAIM": "jti",
+}

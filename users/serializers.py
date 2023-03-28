@@ -1,5 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from .models import User
+from rest_framework import serializers
+from watchedlectures.serializers import WatchedLectureSerializer
 
 
 # 프로필 관련 serializer

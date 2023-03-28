@@ -12,4 +12,5 @@ urlpatterns = [
         "<str:category1>/<str:category2>/<int:pages>", views.TwoCategoryPage.as_view()
     ),
     path("@<str:username>", views.InstructorName.as_view()),
+    path("mainpage", views.MainPage.as_view()),
 ]

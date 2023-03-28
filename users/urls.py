@@ -1,11 +1,11 @@
 from django.urls import path, include
 from rest_framework import urls
 from . import views
-from rest_framework_simplejwt.views import TokenRefreshView
-from rest_framework import routers
-
-router = routers.DefaultRouter()
-router.register("list", views.UserViewSet)  # 유저리스트 (테스트용)
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
 urlpatterns = [
     path("", views.UsersView.as_view()),
@@ -17,10 +17,19 @@ urlpatterns = [
     path("@<str:username>", views.UsernameView.as_view()),
     path("jwttoken", views.JWTokenView.as_view()),
     path("instructor", views.AddInstructor.as_view()),
-    path("register/", views.RegisterAPIView.as_view()),  # post - 회원가입
-    path("auth/", views.AuthAPIView.as_view()),  # post - 로그인, delete - 로그아웃, get - 유저정보
-    path("auth/refresh/", TokenRefreshView.as_view()),  # jwt 토큰 재발급
-    path("password/", include("django.contrib.auth.urls")),
+    path(
+        "calculated-lectures/<int:lectureId>/", views.AddCalculateLecturesView.as_view()
+    ),
+    path(
+        "jwt-token-auth/", TokenObtainPairView.as_view(), name="token_obtain_pair"
+    ),  # 로그인
+    path(
+        "jwt-token-auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"
+    ),  # 리프레시=> 액세스
+    path(
+        "jwt-token-auth/verify/", TokenVerifyView.as_view(), name="token_verify"
+    ),  # 유저인증
+    path("test", views.UsertempProfileView.as_view()),  ## 테스트용
 ]
  
 ################################

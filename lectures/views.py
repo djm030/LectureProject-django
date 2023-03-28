@@ -2,13 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
-from .models import Lecture
+from .models import Lecture, CalculatedLecture
 from . import serializers
 from rest_framework import permissions
 from categories.models import Category
 from categories.serializers import CategorySerializer
 from django.conf import settings
 from users.models import User
+from videos.models import Video
+from videos.serializers import VideoListSerializer
 
 
 #
@@ -30,7 +32,7 @@ class Lectures(APIView):
 
         # settings 로 보낼것.
         print(search_query)
-        page_size = 30
+        page_size = 24
         start = (page - 1) * page_size
         end = start + page_size
         lectures = Lecture.objects.filter(lectureTitle__icontains=search_query)
@@ -65,8 +67,25 @@ class LecturesDetail(APIView):
 
     def get(self, request, pk):
         lecture = self.get_object(pk)
+        cal_lec = CalculatedLecture.objects.get(lecture=lecture)
+        video_list = Video.objects.filter(calculatedLecture=cal_lec)
+        is_enrolled = False
+        # 유저가 해당 강의를 수강중인지 확인
+        try:
+            user = User.objects.get(memberId=request.user.memberId)
+            if cal_lec in user.calculatedLecture.all():
+                is_enrolled = True
+        except:
+            pass
+        video_serializer = VideoListSerializer(video_list, many=True)
         serializer = serializers.LectureSerializer(lecture)
-        return Response(serializer.data)
+        return Response(
+            {
+                "lecture_data": serializer.data,
+                "video_data": video_serializer.data,
+                "is_enrolled": is_enrolled,
+            }
+        )
 
     def put(self, request, pk):
         lecture = self.get_object(pk)
@@ -103,7 +122,7 @@ class SearchLectures(APIView):
         # Apply category filter if specified
         # Paginate results
         total_num = lectures.count()
-        page_size = 30
+        page_size = 24
         page = int(request.query_params.get("page", 1))
         start = (page - 1) * page_size
         end = start + page_size
@@ -111,36 +130,6 @@ class SearchLectures(APIView):
         # Serialize results
         serializer = serializers.LectureListSerializer(paged_lectures, many=True)
         return Response({"data": serializer.data, "totalNum": total_num})
-
-
-# class OneCategory(APIView):
-#     def get_CategoryObject(self, category1):
-#         try:
-#             category = Category.objects.get(classification=category1)
-#             return Category.objects.filter(parent=category)
-#         except Category.DoesNotExist:
-#             raise NotFound
-
-#     def get(self, request, category1):
-
-#         categories = self.get_CategoryObject(category1)
-#         union_query = None
-#         for category in categories:
-#             lectures = Lecture.objects.filter(categories=category)
-#             print(lectures)
-#             if union_query is None:
-#                 union_query = lectures
-#             else:
-#                 union_query = union_query.union(lectures)
-#         total_num = union_query.count()
-#         page_size = 30
-#         page = int(request.query_params.get("page", 1))
-#         start = (page - 1) * page_size
-#         end = start + page_size
-#         paged_union_query = union_query[start:end]
-#         # Serialize results
-#         serializer = serializers.LectureListSerializer(paged_union_query, many=True)
-#         return Response({"data": serializer.data, "totalNum": total_num})
 
 
 class OneCategory(APIView):
@@ -172,7 +161,7 @@ class OneCategory(APIView):
         # Get page number from query parameters
         page = int(request.query_params.get("page", 1))
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 24
         start = (page - 1) * page_size
         end = start + page_size
         # Slice the data based on start and end indices
@@ -181,35 +170,6 @@ class OneCategory(APIView):
         serializer = serializers.LectureListSerializer(paged_union_query, many=True)
         # Construct the response
         return Response({"data": serializer.data, "totalNum": total_num})
-
-
-# class OneCategoryPage(APIView):
-#     def get_CategoryObject(self, category1):
-#         try:
-#             category = Category.objects.get(classification=category1)
-#             return Category.objects.filter(parent=category)
-#         except Category.DoesNotExist:
-#             raise NotFound
-
-#     def get(self, request, category1, pages):
-#         categories = self.get_CategoryObject(category1)
-#         union_query = None
-#         for category in categories:
-#             lectures = Lecture.objects.filter(categories=category)
-#             print(lectures)
-#             if union_query is None:
-#                 union_query = lectures
-#             else:
-#                 union_query = union_query.union(lectures)
-#         total_num = union_query.count()
-#         page_size = 30
-
-#         start = (pages - 1) * page_size
-#         end = start + page_size
-#         paged_union_query = union_query[start:end]
-#         # Serialize results
-#         serializer = serializers.LectureListSerializer(paged_union_query, many=True)
-#         return Response({"data": serializer.data, "totalNum": total_num})
 
 
 class OneCategoryPage(APIView):
@@ -239,7 +199,7 @@ class OneCategoryPage(APIView):
         # Count the total number of lectures
         total_num = union_query.count()
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 24
         start = (pages - 1) * page_size
         end = start + page_size
         # Slice the data based on start and end indices
@@ -248,50 +208,6 @@ class OneCategoryPage(APIView):
         serializer = serializers.LectureListSerializer(paged_union_query, many=True)
         # Construct the response
         return Response({"data": serializer.data, "totalNum": total_num})
-
-
-# class TwoCategory(APIView):
-#     def get_CategoryObject(self, category2):
-#         try:
-#             return Category.objects.get(classification=category2)
-#         except Category.DoesNotExist:
-#             raise NotFound
-
-#     def get(self, request, category1, category2):
-#         category = self.get_CategoryObject(category2)
-#         print(category)
-#         lectures = Lecture.objects.filter(categories=category)
-#         total_num = lectures.count()
-#         page_size = 30
-#         page = int(request.query_params.get("page", 1))
-#         start = (page - 1) * page_size
-#         end = start + page_size
-#         paged_lectures = lectures[start:end]
-#         # Serialize results
-#         serializer = serializers.LectureListSerializer(paged_lectures, many=True)
-#         return Response({"data": serializer.data, "totalNum": total_num})
-
-
-# class TwoCategoryPage(APIView):
-#     def get_CategoryObject(self, category2):
-#         try:
-#             return Category.objects.get(classification=category2)
-#         except Category.DoesNotExist:
-#             raise NotFound
-
-#     def get(self, request, category1, category2, pages):
-#         category = self.get_CategoryObject(category2)
-#         print(category)
-#         lectures = Lecture.objects.filter(categories=category)
-#         total_num = lectures.count()
-#         page_size = 30
-#         # page = int(request.query_params.get("page", 1))
-#         start = (pages - 1) * page_size
-#         end = start + page_size
-#         paged_lectures = lectures[start:end]
-#         # Serialize results
-#         serializer = serializers.LectureListSerializer(paged_lectures, many=True)
-#         return Response({"data": serializer.data, "totalNum": total_num})
 
 
 class TwoCategory(APIView):
@@ -314,7 +230,7 @@ class TwoCategory(APIView):
         # Count the total number of lectures
         total_num = lectures.count()
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 24
         page = int(request.query_params.get("page", 1))
         start = (page - 1) * page_size
         end = start + page_size
@@ -346,7 +262,7 @@ class TwoCategoryPage(APIView):
         # Count the total number of lectures
         total_num = lectures.count()
         # Set page size and calculate start and end indices
-        page_size = 30
+        page_size = 24
         start = (pages - 1) * page_size
         end = start + page_size
         # Slice the data based on start and end indices
@@ -368,3 +284,28 @@ class InstructorName(APIView):
             raise NotFound
         serializer = serializers.LectureDetailSerializer(user_lecture, many=True)
         return Response(serializer.data)
+
+
+from django.db.models import Count
+from reviews.models import Review
+from reviews.serializers import ReviewmainpageSerializer
+
+
+class MainPage(APIView):
+    def get(self, request):
+        top_lectures = Lecture.objects.annotate(
+            total_students=Count("calculatedlecture__user")
+        ).order_by("-total_students")[:8]
+        top_lectures_serializer = serializers.LectureListSerializer(
+            top_lectures, many=True
+        )
+
+        all_review = Review.objects.filter(rating__gte=4)[:4]
+        review_serializer = ReviewmainpageSerializer(all_review, many=True)
+
+        return Response(
+            {
+                "carousel": top_lectures_serializer.data,
+                "review": review_serializer.data,
+            }
+        )
