@@ -1,6 +1,10 @@
 from django.db import models
-
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+    AbstractUser,
+)
 from common.models import CommonModel
 from cart.models import numCart
 from lectures.models import CalculatedLecture
@@ -31,7 +35,32 @@ class Activite(CommonModel):
         abstract = True
 
 
-class User(AbstractUser, Activite):
+class UserManager(BaseUserManager):
+    def create_user(self, username, password, **kwargs):
+        if not username:
+            raise ValueError("Users must have an email address")
+        user = self.model(
+            username=username,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username=None, password=None, **extra_fields):
+        superuser = self.create_user(
+            username=username,
+            password=password,
+        )
+
+        superuser.is_staff = True
+        superuser.is_superuser = True
+        superuser.is_active = True
+
+        superuser.save(using=self._db)
+        return superuser
+
+
+class User(AbstractBaseUser, Activite, PermissionsMixin):
 
     """User Model Definition"""
 
@@ -45,11 +74,18 @@ class User(AbstractUser, Activite):
             "Female",
         )
 
+    username = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+        unique=True,
+    )
+
     password = models.CharField(
         max_length=100,
     )
     # pk 대신 사용
-    memberId = models.AutoField(primary_key=True)
+    # memberId = models.AutoField(primary_key=True)
 
     # profile
 
@@ -75,10 +111,9 @@ class User(AbstractUser, Activite):
         null=True,
         blank=True,
     )
-    email = models.EmailField(
+    email = models.CharField(
         max_length=30,
-        null=True,
-        blank=True,
+        unique=True,
     )
     dateBirth = models.DateField(
         null=True,
@@ -97,9 +132,6 @@ class User(AbstractUser, Activite):
         blank=True,
     )
 
-    phoneNumber = models.CharField(
-        max_length=20,
-    )
     profileImg = models.URLField(
         max_length=50,
         null=True,
@@ -121,12 +153,12 @@ class User(AbstractUser, Activite):
     )
 
     # 구매강의 영역
-    # ledetaile = models.ManyToManyField(
-    #     CalculatedLecture,
-    #     related_name="user",
-    #     null=True,
-    #     blank=True,
-    # )
+    ledetaile = models.ManyToManyField(
+        "ledetailes.LeDetaile",
+        related_name="user",
+        null=True,
+        blank=True,
+    )
     calculatedLecture = models.ManyToManyField(
         CalculatedLecture,
         related_name="user",
@@ -161,8 +193,26 @@ class User(AbstractUser, Activite):
         default="",
     )
 
-    def __str__(self):
-        return self.username
+    is_staff = models.BooleanField(
+        ("staff status"),
+        default=True,
+        help_text=("Designates whether the user can log into this admin site."),
+    )
+
+    is_active = models.BooleanField(
+        ("active"),
+        default=True,
+        help_text=(
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+        ),
+    )
+
+    # 헬퍼 클래스 사용
+    objects = UserManager()
+
+    # 사용자의 username field는 email으로 설정 (이메일로 로그인)
+    USERNAME_FIELD = "username"
 
     def save(self, *args, **kwargs):
         created = self.pk is None  # Check if the user is being created or updated

@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import urls
 from . import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -30,6 +31,7 @@ urlpatterns = [
     ),  # 유저인증
     path("test", views.UsertempProfileView.as_view()),  ## 테스트용
 ]
+ 
 ################################
 # url list
 # api/v1/users/ post : 회원가입

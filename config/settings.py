@@ -79,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "users.middleware.JWTAuthenticationMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -174,6 +175,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 ## JWTAuthentication
 
+# jwt 토큰은 simplejwt의 JWTAuthentication으로 인증한다.
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "config.authentication.JWTAuthentication",
@@ -200,14 +202,24 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_ALL_HEADERS = True
 
+# email
+# 메일을 보내는 호스트 서버
+EMAIL_HOST = "smtp.gmail.com"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.naver.com"
-EMAIL_HOST_USER = "lee88067@naver.com"
-EMAIL_HOST_PASSWORD = "1648audu!"
+# ENAIL_HOST에 정의된 SMTP 서버가 사용하는 포트 (587: TLS/STARTTLS용 포트)
+EMAIL_PORT = "587"
+
+#  발신할 이메일 주소 '~@gmail.com'
+EMAIL_HOST_USER = "kimnamwook08@gmail.com"
+
+# 발신할 이메일 비밀번호 (2단계 인증일경우 앱 비밀번호)
+EMAIL_HOST_PASSWORD = "ymadhdipllytsfkr"
+
+# TLS 보안 방법 (SMPT 서버와 통신할 떄 TLS (secure) connection 을 사용할지 말지 여부)
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-DEFAULT_FROM_MAIL = EMAIL_HOST_USER
+
+# 사이트와 a관련한 자동응답을 받을 이메일 주소
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
