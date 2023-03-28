@@ -85,7 +85,7 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         max_length=100,
     )
     # pk 대신 사용
-    # memberId = models.AutoField(primary_key=True)
+    memberId = models.AutoField(primary_key=True)
 
     # profile
 
@@ -152,13 +152,13 @@ class User(AbstractBaseUser, Activite, PermissionsMixin):
         blank=True,
     )
 
-    # 구매강의 영역
-    ledetaile = models.ManyToManyField(
-        "ledetailes.LeDetaile",
-        related_name="user",
-        null=True,
-        blank=True,
-    )
+    # # 구매강의 영역
+    # ledetaile = models.ManyToManyField(
+    #     "ledetailes.LeDetaile",
+    #     related_name="user",
+    #     null=True,
+    #     blank=True,
+    # )
     calculatedLecture = models.ManyToManyField(
         CalculatedLecture,
         related_name="user",

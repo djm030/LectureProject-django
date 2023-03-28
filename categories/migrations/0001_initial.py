@@ -7,13 +7,11 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
     initial = True
 
-    dependencies = [
-        ("lectures", "0001_initial"),
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name="Video",
+            name="Category",
             fields=[
                 (
                     "id",
@@ -26,22 +24,21 @@ class Migration(migrations.Migration):
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True, null=True)),
                 ("updated_at", models.DateTimeField(auto_now=True, null=True)),
-                ("title", models.CharField(max_length=100)),
-                ("description", models.TextField()),
-                ("videoFile", models.URLField()),
-                ("videoLength", models.IntegerField(default=0)),
+                ("name", models.CharField(max_length=100)),
+                ("classification", models.CharField(max_length=100)),
                 (
-                    "calculatedLecture",
+                    "parent",
                     models.ForeignKey(
+                        blank=True,
                         null=True,
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="video",
-                        to="lectures.calculatedlecture",
+                        related_name="children",
+                        to="categories.category",
                     ),
                 ),
             ],
             options={
-                "abstract": False,
+                "verbose_name_plural": "Categories",
             },
         ),
     ]

@@ -9,38 +9,29 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("reviews", "0001_initial"),
+        ("lectures", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="review",
-            name="user",
-            field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE,
-                related_name="reviews",
-                to=settings.AUTH_USER_MODEL,
-            ),
-        ),
-        migrations.AddField(
-            model_name="reply",
-            name="review",
+            model_name="lecture",
+            name="instructor",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name="reply",
-                to="reviews.review",
+                related_name="lectures",
+                to=settings.AUTH_USER_MODEL,
             ),
         ),
         migrations.AddField(
-            model_name="reply",
-            name="user",
+            model_name="calculatedlecture",
+            name="lecture",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name="reply",
-                to=settings.AUTH_USER_MODEL,
+                related_name="calculatedlecture",
+                to="lectures.lecture",
             ),
         ),
     ]
